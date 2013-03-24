@@ -1,5 +1,14 @@
+cmake_minimum_required(VERSION 2.8)
 project(btbot)
 
-add_executable(btbot main.cpp)
+set(CMAKE_VERBOSE_MAKEFILE on)
 
-install(TARGETS btbot RUNTIME DESTINATION bin)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror -std=gnu99 -pedantic")
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -g")
+
+add_subdirectory(src)
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src/btbot")
+link_directories("${CMAKE_CURRENT_SOURCE_DIR}/src/btbot")
+
+add_subdirectory(tests)
+add_subdirectory(examples)
