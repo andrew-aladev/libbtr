@@ -49,7 +49,7 @@ bt_magnet_info * bt_magnet_parse ( TALLOC_CTX * ctx, char * uri ) {
             value_size = uri_length - ( value - uri );
         } else {
             value_size = walk - value;
-            walk       = walk + 1;
+            walk++;
         }
 
         if ( !strncmp ( key, "xt", 2 ) && !strncmp ( value, "urn:btih:", 9 ) && value_size == HASH_LENGTH + 9 ) {
