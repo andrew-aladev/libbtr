@@ -15,7 +15,7 @@ int main() {
         talloc_free ( ctx );
         return 1;
     }
-    bt_base32_to_hex ( ctx, "abcdefghijklmnopqrstuvwxqz234567" );
+    bt_base32_to_base16 ( ctx, "abcdefghijklmnopqrstuvwxqz234567" );
 
     talloc_free ( ctx );
     return 0;

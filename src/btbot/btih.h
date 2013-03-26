@@ -8,32 +8,60 @@
 
 #include <math.h>
 #include <string.h>
+#include <stdint.h>
 #include <talloc.h>
 
+static const int BASE32_SMALL_ALPHA_OFFSET = - 'a';
+static const int BASE32_BIG_ALPHA_OFFSET   = - 'A';
+static const int BASE32_NUMBER_OFFSET      = 26 - '2';
+
+static inline
+int8_t from_base32 ( int8_t ch ) {
+    if ( ch >= 'a' && ch <= 'z' ) {
+        return ch + BASE32_SMALL_ALPHA_OFFSET;
+    } else if ( ch >= 'A' && ch <= 'Z' ) {
+        return ch + BASE32_BIG_ALPHA_OFFSET;
+    } else if ( ch >= '2' && ch <= '7' ) {
+        return ch + BASE32_NUMBER_OFFSET;
+    } else {
+        return - 1;
+    }
+}
+
 extern inline
-char * bt_base32_to_hex ( TALLOC_CTX * ctx, char * encoded ) {
+char * bt_base32_to_base16 ( TALLOC_CTX * ctx, char * encoded ) {
     size_t encoded_length = strlen ( encoded );
-    size_t result_length  = ( size_t ) ceil ( 0.625 * encoded_length );
+    size_t result_length  = ( size_t ) ceil ( 1.25 * encoded_length );
     char * result = talloc_array ( ctx, char, result_length );
     if ( !result ) {
         return NULL;
     }
 
-    char ch;
+    int8_t ch;
     char * walk     = encoded;
     char * walk_end = walk + encoded_length;
 
-    char number_offset = '2' - 26;
+    uint32_t buffer       = 0;
+    uint8_t  buffer_size  = 0;
+    size_t   result_index = 0;
     while ( walk != walk_end ) {
-        ch = *walk;
-
-        if ( ch >= 'a' && ch <= 'z' ) {
-            ch = ( ch & 0x1F ) - 1;
-        } else if ( ch >= '2' && ch <= '7' ) {
-            ch -= number_offset;
-        } else {
+        buffer <<= 5;
+        ch = from_base32 ( *walk );
+        if ( ch == -1 ) {
             talloc_free ( result );
             return NULL;
+        }
+        buffer |= ch;
+        buffer_size += 5;
+
+        if ( buffer_size >= 28 ) {
+            while ( buffer_size ) {
+                ch = ( char ) buffer & 0xF;
+                //printf ( "%d\n", ( int ) ch );
+                buffer >>= 4;
+                result_index++;
+                buffer_size -= 4;
+            }
         }
 
         walk++;
@@ -43,3 +71,4 @@ char * bt_base32_to_hex ( TALLOC_CTX * ctx, char * encoded ) {
 }
 
 #endif
+

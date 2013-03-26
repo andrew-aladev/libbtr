@@ -3,6 +3,7 @@ project(btbot)
 
 set(CMAKE_VERBOSE_MAKEFILE on)
 
+set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror -std=gnu99 -pedantic")
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -g")
 
