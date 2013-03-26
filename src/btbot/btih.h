@@ -1,3 +1,8 @@
+// This file is part of btbot. Copyright (C) 2013 Andrew Aladjev aladjev.andrew@gmail.com
+// btbot is free software: you can redistribute it and/or modify it under the terms of the GNU General Lesser Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+// btbot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Lesser Public License for more details.
+// You should have received a copy of the GNU General Lesser Public License along with btbot. If not, see <http://www.gnu.org/licenses/>.
+
 #ifndef BTIH_H
 #define BTIH_H
 
@@ -36,37 +41,5 @@ char * bt_base32_to_hex ( TALLOC_CTX * ctx, char * encoded ) {
 
     return NULL;
 }
-
-/*
-int base32_decode ( const uint8_t *encoded, uint8_t *result, int bufSize ) {
-    int buffer = 0;
-    int bitsLeft = 0;
-    int count = 0;
-    for ( const uint8_t *ptr = encoded; count < bufSize && *ptr; ++ptr ) {
-        uint8_t ch = *ptr;
-        buffer <<= 5;
-
-        // Look up one base32 digit
-        if ( ( ch >= 'A' && ch <= 'Z' ) || ( ch >= 'a' && ch <= 'z' ) ) {
-            ch = ( ch & 0x1F ) - 1;
-        } else if ( ch >= '2' && ch <= '7' ) {
-            ch -= '2' - 26;
-        } else {
-            return -1;
-        }
-
-        buffer |= ch;
-        bitsLeft += 5;
-        if ( bitsLeft >= 8 ) {
-            result[count++] = buffer >> ( bitsLeft - 8 );
-            bitsLeft -= 8;
-        }
-    }
-    if ( count < bufSize ) {
-        result[count] = '\000';
-    }
-    return count;
-}
-*/
 
 #endif
