@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <talloc.h>
-#include <magnet.h>
+#include <btbot/magnet.h>
 
 int main() {
     TALLOC_CTX * ctx = talloc_new ( NULL );

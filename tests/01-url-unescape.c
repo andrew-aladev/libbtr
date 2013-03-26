@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <talloc.h>
-#include <url.h>
+#include <btbot/url.h>
 
 int main() {
     TALLOC_CTX * ctx = talloc_new ( NULL );
