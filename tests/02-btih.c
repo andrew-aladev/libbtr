@@ -58,6 +58,47 @@ int main() {
         talloc_free ( ctx );
         return 8;
     }
+    
+    // should return NULL
+    result = bt_base64_decode ( ctx, "", &result_length );
+    if ( result ) {
+        talloc_free ( ctx );
+        return 9;
+    }
+    result = bt_base64_decode ( ctx, "=", &result_length );
+    if ( result ) {
+        talloc_free ( ctx );
+        return 10;
+    }
+    result = bt_base64_decode ( ctx, "====", &result_length );
+    if ( result ) {
+        talloc_free ( ctx );
+        return 11;
+    }
+    result = bt_base64_decode ( ctx, "=a==", &result_length );
+    if ( result ) {
+        talloc_free ( ctx );
+        return 12;
+    }
+    result = bt_base64_decode ( ctx, "a====", &result_length );
+    if ( result ) {
+        talloc_free ( ctx );
+        return 13;
+    }
+    
+    // should return valid hash
+    result = bt_base64_decode ( ctx, "YWJjZA==", &result_length );
+    uint8_t answer_3[] = {'a', 'b', 'c', 'd', 0};
+    if ( !result || result_length != 5 || memcmp ( result, answer_3, 4 ) ) {
+        talloc_free ( ctx );
+        return 14;
+    }
+    result = bt_base64_decode ( ctx, "7018b750d7be55ba6b05aca43dfea14c85502225", &result_length );
+    uint8_t answer_4[] = { 0xEF, 0x4D, 0x7C, 0x6F, 0xBE, 0x74, 0x77, 0xB6, 0xDE, 0xE7, 0x96, 0xDA, 0xE9, 0xBD, 0x39, 0x69, 0xC6, 0xB8, 0xDD, 0xD7, 0xDE, 0x6B, 0x5E, 0x1C, 0xF3, 0x9E, 0x74, 0xDB, 0x6D, 0xB9};
+    if ( !result || result_length != 30 || memcmp ( result, answer_4, 30 ) ) {
+        talloc_free ( ctx );
+        return 8;
+    }
 
     talloc_free ( ctx );
     return 0;
