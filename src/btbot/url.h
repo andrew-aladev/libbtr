@@ -35,10 +35,11 @@ char * bt_unescape ( TALLOC_CTX * ctx, char * url ) {
         } else if ( ch == '%' ) {
             walk_url++;
             if ( end_url - walk_url < 2 ) {
+                // bad hex
                 talloc_free ( buffer );
                 return NULL;
             }
-            
+
             char * hex = talloc_strndup ( buffer, walk_url, 2 );
             if ( !hex ) {
                 talloc_free ( buffer );
@@ -52,14 +53,19 @@ char * bt_unescape ( TALLOC_CTX * ctx, char * url ) {
             talloc_free ( hex );
             walk_url++;
         }
-        
+
         *walk_buffer = ch;
         walk_url++;
         walk_buffer++;
     }
-    
+
     *walk_buffer = '\0';
     char * result = talloc_strdup ( ctx, buffer );
+    if ( !result ) {
+        talloc_free ( buffer );
+        return NULL;
+    }
+
     talloc_free ( buffer );
     return result;
 }

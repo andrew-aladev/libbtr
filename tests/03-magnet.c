@@ -60,22 +60,30 @@ int main() {
     }
 
     // should return valid info
-    info = bt_magnet_parse ( ctx, "magnet:?xt=urn:btih:7018b750d7be55ba6b05aca43dfea14c85502225" );
-    if ( !info || strcmp ( info->hash, "7018b750d7be55ba6b05aca43dfea14c85502225" ) ) {
+    info = bt_magnet_parse ( ctx, "magnet:?xt=urn:btih:IJBDPDSBT4QZLBIJ6NX7LITSZHZQ7F5I" );
+    uint8_t hash_1[] = { 0x42, 0x42, 0x37, 0x8E, 0x41, 0x9F, 0x21, 0x95, 0x85, 0x09, 0xF3, 0x6F, 0xF5, 0xA2, 0x72, 0xC9, 0xF3, 0x0F, 0x97, 0xA8 };
+    if (
+        !info ||
+        info->hash_length != 20 ||
+        memcmp ( info->hash, hash_1, 20 )
+    ) {
         talloc_free ( ctx );
         return 9;
     }
     talloc_free ( info );
 
     info = bt_magnet_parse ( ctx,
-                             "magnet:?xt=urn:btih:7018b750d7be55ba6b05aca43dfea14c85502225"
+                             "magnet:?xt=urn:btih:f502f11df1c29b5ca8e5c2fa50abcbf59b1d274f"
                              "&dn=Gentoo+Linux+20121221+LiveDVD+-+End+Of+World+Edition+%28amd64%29"
                              "&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80"
                              "&tr=udp%3A%2F%2Ftracker.publicbt.com%3A80"
                              "&tr=udp%3A%2F%2Ftracker.istole.it%3A6969"
                              "&tr=udp%3A%2F%2Ftracker.ccc.de%3A80" );
+    uint8_t hash_2[] = { 0x7F, 0x9D, 0x36, 0x7F, 0x5D, 0x5D, 0x7F, 0x57, 0x36, 0xF5, 0xBE, 0x5C, 0x6B, 0xC7, 0xB9, 0x73, 0x67, 0xDA, 0xE7, 0x46, 0x9B, 0x71, 0xB7, 0xF9, 0xF5, 0xBD, 0x5D, 0xDB, 0xBE, 0x1F};
     if (
         !info ||
+        info->hash_length != 30 ||
+        memcmp ( info->hash, hash_2, 30 ) ||
         info->trackers_count != 4 ||
         strcmp ( info->display_name, "Gentoo Linux 20121221 LiveDVD - End Of World Edition (amd64)" ) ||
         strcmp ( info->trackers[0],  "udp://tracker.openbittorrent.com:80" ) ||
@@ -89,14 +97,17 @@ int main() {
     talloc_free ( info );
 
     info = bt_magnet_parse ( ctx,
-                             "magnet:?xt=urn:btih:7018b750d7be55ba6b05aca43dfea14c85502225"
+                             "magnet:?xt=urn:btih:2f833c7a0a51890238e68c7057686e46e9b15f17"
                              "&dn=Gentoo+Linux+20121221+LiveDVD+-+End+Of+World+Edition+%28amd64%29"
                              "&tr.1=udp%3A%2F%2Ftracker.openbittorrent.com%3A80"
                              "&tr.2=udp%3A%2F%2Ftracker.publicbt.com%3A80"
                              "&tr.3=udp%3A%2F%2Ftracker.istole.it%3A6969"
                              "&tr.4=udp%3A%2F%2Ftracker.ccc.de%3A80" );
+    uint8_t hash_3[] = { 0xD9, 0xFF, 0x37, 0xDD, 0xCE, 0xDA, 0xD1, 0xAE, 0x75, 0xF3, 0xDD, 0x36, 0xDF, 0xC7, 0xBA, 0xF1, 0xCE, 0xF4, 0xE7, 0xBE, 0xBC, 0xE9, 0xEE, 0x3A, 0x7B, 0xD6, 0xF5, 0xE5, 0xFD, 0x7B };
     if (
         !info ||
+        info->hash_length != 30 ||
+        memcmp ( info->hash, hash_3, 30 ) ||
         info->trackers_count != 4 ||
         strcmp ( info->display_name, "Gentoo Linux 20121221 LiveDVD - End Of World Edition (amd64)" ) ||
         strcmp ( info->trackers[0],  "udp://tracker.openbittorrent.com:80" ) ||

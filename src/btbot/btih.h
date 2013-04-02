@@ -8,7 +8,6 @@
 #ifndef BTIH_H
 #define BTIH_H
 
-#include <string.h>
 #include <stdint.h>
 #include <talloc.h>
 #include <inttypes.h>
@@ -29,8 +28,7 @@ int8_t from_base32 ( int8_t ch ) {
 }
 
 extern inline
-uint8_t * bt_base32_decode ( TALLOC_CTX * ctx, char * src, size_t * result_length ) {
-    size_t src_length = strlen ( src );
+uint8_t * bt_base32_decode ( TALLOC_CTX * ctx, char * src, size_t src_length, size_t * result_length ) {
     if ( !src_length ) {
         return NULL;
     }
@@ -112,9 +110,9 @@ int8_t from_base64 ( int8_t ch ) {
         return ch - 'A';
     } else if ( ch >= '0' && ch <= '9' ) {
         return ch - '0' + 52;
-    } else if ( ch == '+') {
+    } else if ( ch == '+' ) {
         return 62;
-    } else if ( ch == '/') {
+    } else if ( ch == '/' ) {
         return 63;
     } else {
         return - 1;
@@ -122,8 +120,7 @@ int8_t from_base64 ( int8_t ch ) {
 }
 
 extern inline
-uint8_t * bt_base64_decode ( TALLOC_CTX * ctx, char * src, size_t * result_length ) {
-    size_t src_length = strlen ( src );
+uint8_t * bt_base64_decode ( TALLOC_CTX * ctx, char * src, size_t src_length, size_t * result_length ) {
     if ( !src_length ) {
         return NULL;
     }
