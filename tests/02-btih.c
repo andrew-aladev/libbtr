@@ -15,105 +15,146 @@ int main() {
         talloc_free ( ctx );
         return 1;
     }
-    char * src;
-    uint8_t * result;
-    size_t result_length = 0;
+    char *    src_string;
+    uint8_t * result_hash;
+    size_t    result_length = 0;
 
     // should return NULL
-    src = "";
-    result = bt_base32_decode ( ctx, src, strlen ( src ), &result_length );
-    if ( result ) {
+    src_string = "";
+    result_hash = bt_base32_decode ( ctx, src_string, strlen ( src_string ), &result_length );
+    if ( result_hash ) {
         talloc_free ( ctx );
         return 2;
     }
-    src = "=";
-    result = bt_base32_decode ( ctx, src, strlen ( src ), &result_length );
-    if ( result ) {
+    src_string = "=";
+    result_hash = bt_base32_decode ( ctx, src_string, strlen ( src_string ), &result_length );
+    if ( result_hash ) {
         talloc_free ( ctx );
         return 3;
     }
-    src = "========";
-    result = bt_base32_decode ( ctx, src, strlen ( src ), &result_length );
-    if ( result ) {
+    src_string = "========";
+    result_hash = bt_base32_decode ( ctx, src_string, strlen ( src_string ), &result_length );
+    if ( result_hash ) {
         talloc_free ( ctx );
         return 4;
     }
-    src = "=a======";
-    result = bt_base32_decode ( ctx, src, strlen ( src ), &result_length );
-    if ( result ) {
+    src_string = "=a======";
+    result_hash = bt_base32_decode ( ctx, src_string, strlen ( src_string ), &result_length );
+    if ( result_hash ) {
         talloc_free ( ctx );
         return 5;
     }
-    src = "a========";
-    result = bt_base32_decode ( ctx, src, strlen ( src ), &result_length );
-    if ( result ) {
+    src_string = "a========";
+    result_hash = bt_base32_decode ( ctx, src_string, strlen ( src_string ), &result_length );
+    if ( result_hash ) {
         talloc_free ( ctx );
         return 6;
     }
 
     // should return valid hash
-    src = "MFRGG===";
-    result = bt_base32_decode ( ctx, src, strlen ( src ), &result_length );
-    uint8_t answer_1[] = {'a', 'b', 'c', 0};
-    if ( !result || result_length != 4 || memcmp ( result, answer_1, 4 ) ) {
+    src_string = "MFRGG===";
+    result_hash = bt_base32_decode ( ctx, src_string, strlen ( src_string ), &result_length );
+    uint8_t answer_1[] = {'a', 'b', 'c'};
+    if ( !result_hash || result_length != sizeof ( answer_1 ) || memcmp ( result_hash, answer_1, sizeof ( answer_1 ) ) ) {
         talloc_free ( ctx );
         return 7;
     }
-    src = "BGQHKHR56P6J32HGQTCCHFIA7UTHWEF6";
-    result = bt_base32_decode ( ctx, src, strlen ( src ), &result_length );
-    uint8_t answer_2[] = {0x09, 0xA0, 0x75, 0x1E, 0x3D, 0xF3, 0xFC, 0x9D, 0xE8, 0xE6, 0x84, 0xC4, 0x23, 0x95, 0x00, 0xFD, 0x26, 0x7B, 0x10, 0xBE, 0x00};
-    if ( !result || result_length != 20 || memcmp ( result, answer_2, 20 ) ) {
+    talloc_free ( result_hash );
+
+    src_string = "BGQHKHR56P6J32HGQTCCHFIA7UTHWEF6";
+    result_hash = bt_base32_decode ( ctx, src_string, strlen ( src_string ), &result_length );
+    uint8_t answer_2[] = {0x09, 0xA0, 0x75, 0x1E, 0x3D, 0xF3, 0xFC, 0x9D, 0xE8, 0xE6, 0x84, 0xC4, 0x23, 0x95, 0x00, 0xFD, 0x26, 0x7B, 0x10, 0xBE};
+    if ( !result_hash || result_length != sizeof ( answer_2 ) || memcmp ( result_hash, answer_2, sizeof ( answer_2 ) ) ) {
         talloc_free ( ctx );
         return 8;
     }
+    talloc_free ( result_hash );
 
     // should return NULL
-    src = "";
-    result = bt_base64_decode ( ctx, src, strlen ( src ), &result_length );
-    if ( result ) {
+    src_string = "";
+    result_hash = bt_base64_decode ( ctx, src_string, strlen ( src_string ), &result_length );
+    if ( result_hash ) {
         talloc_free ( ctx );
         return 9;
     }
-    src = "=";
-    result = bt_base64_decode ( ctx, src, strlen ( src ), &result_length );
-    if ( result ) {
+    src_string = "=";
+    result_hash = bt_base64_decode ( ctx, src_string, strlen ( src_string ), &result_length );
+    if ( result_hash ) {
         talloc_free ( ctx );
         return 10;
     }
-    src = "====";
-    result = bt_base64_decode ( ctx, src, strlen ( src ), &result_length );
-    if ( result ) {
+    src_string = "====";
+    result_hash = bt_base64_decode ( ctx, src_string, strlen ( src_string ), &result_length );
+    if ( result_hash ) {
         talloc_free ( ctx );
         return 11;
     }
-    src = "=a==";
-    result = bt_base64_decode ( ctx, src, strlen ( src ), &result_length );
-    if ( result ) {
+    src_string = "=a==";
+    result_hash = bt_base64_decode ( ctx, src_string, strlen ( src_string ), &result_length );
+    if ( result_hash ) {
         talloc_free ( ctx );
         return 12;
     }
-    src = "a====";
-    result = bt_base64_decode ( ctx, src, strlen ( src ), &result_length );
-    if ( result ) {
+    src_string = "a====";
+    result_hash = bt_base64_decode ( ctx, src_string, strlen ( src_string ), &result_length );
+    if ( result_hash ) {
         talloc_free ( ctx );
         return 13;
     }
 
     // should return valid hash
-    src = "YWJjZA==";
-    result = bt_base64_decode ( ctx, src, strlen ( src ), &result_length );
-    uint8_t answer_3[] = {'a', 'b', 'c', 'd', 0};
-    if ( !result || result_length != 5 || memcmp ( result, answer_3, 4 ) ) {
+    src_string = "YWJjZA==";
+    result_hash = bt_base64_decode ( ctx, src_string, strlen ( src_string ), &result_length );
+    uint8_t answer_3[] = {'a', 'b', 'c', 'd'};
+    if ( !result_hash || result_length != sizeof ( answer_3 ) || memcmp ( result_hash, answer_3, sizeof ( answer_3 ) ) ) {
         talloc_free ( ctx );
         return 14;
     }
-    src = "7018b750d7be55ba6b05aca43dfea14c85502225";
-    result = bt_base64_decode ( ctx, src, strlen ( src ), &result_length );
+    talloc_free ( result_hash );
+
+    src_string = "7018b750d7be55ba6b05aca43dfea14c85502225";
+    result_hash = bt_base64_decode ( ctx, src_string, strlen ( src_string ), &result_length );
     uint8_t answer_4[] = { 0xEF, 0x4D, 0x7C, 0x6F, 0xBE, 0x74, 0x77, 0xB6, 0xDE, 0xE7, 0x96, 0xDA, 0xE9, 0xBD, 0x39, 0x69, 0xC6, 0xB8, 0xDD, 0xD7, 0xDE, 0x6B, 0x5E, 0x1C, 0xF3, 0x9E, 0x74, 0xDB, 0x6D, 0xB9};
-    if ( !result || result_length != 30 || memcmp ( result, answer_4, 30 ) ) {
+    if ( !result_hash || result_length != sizeof ( answer_4 ) || memcmp ( result_hash, answer_4, sizeof ( answer_4 ) ) ) {
         talloc_free ( ctx );
         return 15;
     }
+    talloc_free ( result_hash );
+
+    // should return valid string
+    char * result_string;
+
+    uint8_t src_hash_1[] = {'a', 'b', 'c'};
+    result_string = bt_base32_encode ( ctx, src_hash_1, sizeof ( src_hash_1 ), &result_length );
+    if ( !result_string || result_length != 9 || strcmp ( result_string, "mfrgg===" ) ) {
+        talloc_free ( ctx );
+        return 16;
+    }
+    talloc_free ( result_string );
+
+    uint8_t src_hash_2[] = {0x09, 0xA0, 0x75, 0x1E, 0x3D, 0xF3, 0xFC, 0x9D, 0xE8, 0xE6, 0x84, 0xC4, 0x23, 0x95, 0x00, 0xFD, 0x26, 0x7B, 0x10, 0xBE};
+    result_string = bt_base32_encode ( ctx, src_hash_2, sizeof ( src_hash_2 ), &result_length );
+    if ( !result_string || result_length != 33 || strcmp ( result_string, "bgqhkhr56p6j32hgqtcchfia7uthwef6" ) ) {
+        talloc_free ( ctx );
+        return 17;
+    }
+    talloc_free ( result_string );
+
+    uint8_t src_hash_3[] = {'a', 'b', 'c', 'd'};
+    result_string = bt_base64_encode ( ctx, src_hash_3, sizeof ( src_hash_3 ), &result_length );
+    if ( !result_string || result_length != 9 || strcmp ( result_string, "YWJjZA==" ) ) {
+        talloc_free ( ctx );
+        return 18;
+    }
+    talloc_free ( result_string );
+    
+    uint8_t src_hash_4[] = { 0xEF, 0x4D, 0x7C, 0x6F, 0xBE, 0x74, 0x77, 0xB6, 0xDE, 0xE7, 0x96, 0xDA, 0xE9, 0xBD, 0x39, 0x69, 0xC6, 0xB8, 0xDD, 0xD7, 0xDE, 0x6B, 0x5E, 0x1C, 0xF3, 0x9E, 0x74, 0xDB, 0x6D, 0xB9};
+    result_string = bt_base64_encode ( ctx, src_hash_4, sizeof ( src_hash_4 ), &result_length );
+    if ( !result_string || result_length != 41 || strcmp ( result_string, "7018b750d7be55ba6b05aca43dfea14c85502225" ) ) {
+        talloc_free ( ctx );
+        return 19;
+    }
+    talloc_free ( result_string );
 
     talloc_free ( ctx );
     return 0;
