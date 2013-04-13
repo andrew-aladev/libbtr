@@ -3,8 +3,8 @@
 // btbot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Lesser Public License for more details.
 // You should have received a copy of the GNU General Lesser Public License along with btbot. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef URL_H
-#define URL_H
+#ifndef UTILS_URL_H
+#define UTILS_URL_H
 
 #include <stdbool.h>
 #include <string.h>

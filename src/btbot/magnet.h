@@ -9,7 +9,9 @@
 #include <stdint.h>
 #include <talloc.h>
 
-// See specification http://www.bittorrent.org/beps/bep_0009.html
+// See specification http://www.bittorrent.org/beps/bep_0009.html 
+//   additions https://trac.transmissionbt.com/ticket/5134
+//   additions https://trac.transmissionbt.com/ticket/2631
 
 #define BT_HASH_BASE32_SRC  32
 #define BT_HASH_BASE32_INFO 20
@@ -23,6 +25,8 @@ typedef struct bt_magnet_info {
     char *    display_name;
     char **   trackers;
     size_t    trackers_count;
+    char **   webseeds;
+    size_t    webseeds_count;
 }
 bt_magnet_info;
 

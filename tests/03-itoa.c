@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <talloc.h>
-#include <btbot/utils/url.h>
+#include <btbot/utils/itoa.h>
 
 int main() {
     TALLOC_CTX * ctx = talloc_new ( NULL );
@@ -15,39 +15,19 @@ int main() {
         talloc_free ( ctx );
         return 1;
     }
-    char * url;
+    char * str;
 
-    // should return NULL
-    url = bt_unescape ( ctx, NULL );
-    if ( url ) {
-        talloc_free ( ctx );
+    str = bt_size_t_to_str ( ctx, 0 );
+    if ( strcmp ( str, "0" ) ) {
         return 1;
     }
-    url = bt_unescape ( ctx, "%" );
-    if ( url ) {
-        talloc_free ( ctx );
-        return 1;
-    }
-    url = bt_unescape ( ctx, "%1" );
-    if ( url ) {
-        talloc_free ( ctx );
+    talloc_free ( str );
+
+    str = bt_size_t_to_str ( ctx, 123456 );
+    if ( strcmp ( str, "123456" ) ) {
         return 2;
     }
-
-    //should return unescaped url
-    url = bt_unescape ( ctx, "Gentoo+Linux+20121221+LiveDVD+-+End+Of+World+Edition+%28amd64%29" );
-    if ( !url || strcmp ( url, "Gentoo Linux 20121221 LiveDVD - End Of World Edition (amd64)" ) ) {
-        talloc_free ( ctx );
-        return 3;
-    }
-    talloc_free ( url );
-
-    url = bt_unescape ( ctx, "udp%3A%2F%2Ftracker.openbittorrent.com%3A80" );
-    if ( !url || strcmp ( url, "udp://tracker.openbittorrent.com:80" ) ) {
-        talloc_free ( ctx );
-        return 4;
-    }
-    talloc_free ( url );
+    talloc_free ( str );
 
     talloc_free ( ctx );
     return 0;

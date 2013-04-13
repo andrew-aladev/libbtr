@@ -3,8 +3,8 @@
 // btbot is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Lesser Public License for more details.
 // You should have received a copy of the GNU General Lesser Public License along with btbot. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef LIST_H
-#define LIST_H
+#ifndef UTILS_LIST_H
+#define UTILS_LIST_H
 
 #include <stdbool.h>
 #include <talloc.h>
