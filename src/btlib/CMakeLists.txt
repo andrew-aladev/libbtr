@@ -1,6 +1,6 @@
 add_library(
-    btlib SHARED
+    libbtr SHARED
     magnet.c
     btih.c
 )
-target_link_libraries(btlib talloc m)
+target_link_libraries(libbtr talloc m)

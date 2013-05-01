@@ -1,1 +1,1 @@
-add_subdirectory(btlib)
+add_subdirectory(libbtr)
