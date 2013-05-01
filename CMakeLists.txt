@@ -11,5 +11,6 @@ add_subdirectory(src)
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src/")
 link_directories("${CMAKE_CURRENT_SOURCE_DIR}/src/libbtr")
 
+enable_testing()
 add_subdirectory(tests)
 add_subdirectory(examples)
