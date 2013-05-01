@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(btbot)
+project(btlib)
 
 set(CMAKE_VERBOSE_MAKEFILE on)
 
@@ -9,7 +9,7 @@ set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -g")
 
 add_subdirectory(src)
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src/")
-link_directories("${CMAKE_CURRENT_SOURCE_DIR}/src/btbot")
+link_directories("${CMAKE_CURRENT_SOURCE_DIR}/src/btlib")
 
 add_subdirectory(tests)
 add_subdirectory(examples)

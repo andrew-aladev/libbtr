@@ -1,1 +1,1 @@
-add_subdirectory(btbot)
+add_subdirectory(btlib)
