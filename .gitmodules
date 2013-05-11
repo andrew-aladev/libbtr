@@ -1,0 +1,3 @@
+[submodule "talloc"]
+	path = talloc
+	url = git@github.com:andrew-aladev/talloc.git

@@ -7,7 +7,6 @@
 #define MAGNET_H
 
 #include <stdint.h>
-#include <talloc.h>
 
 // See specification http://www.bittorrent.org/beps/bep_0009.html 
 //   additions https://trac.transmissionbt.com/ticket/5134
@@ -30,6 +29,6 @@ typedef struct bt_magnet_info {
 }
 bt_magnet_info;
 
-bt_magnet_info * bt_magnet_parse ( TALLOC_CTX * root, char * uri );
+bt_magnet_info * bt_magnet_parse ( void * root, char * uri );
 
 #endif

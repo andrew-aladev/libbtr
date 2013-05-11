@@ -1,5 +1,7 @@
 #include "btih.h"
 
+#include <talloc/tree.h>
+
 static inline
 int8_t from_base32 ( int8_t ch ) {
     if ( ch >= 'a' && ch <= 'z' ) {
@@ -13,7 +15,7 @@ int8_t from_base32 ( int8_t ch ) {
     }
 }
 
-uint8_t * bt_base32_decode ( TALLOC_CTX * ctx, char * src, size_t src_length, size_t * result_length ) {
+uint8_t * bt_base32_decode ( void * ctx, char * src, size_t src_length, size_t * result_length ) {
     if ( !src_length ) {
         return NULL;
     }
@@ -47,7 +49,7 @@ uint8_t * bt_base32_decode ( TALLOC_CTX * ctx, char * src, size_t src_length, si
 
     size_t length       = bits / 8;
     size_t result_index = 0;
-    uint8_t * result    = talloc_array ( ctx, uint8_t, length );
+    uint8_t * result    = talloc ( ctx, sizeof ( uint8_t ) * length );
     if ( !result ) {
         return NULL;
     }
@@ -88,7 +90,7 @@ int8_t to_base32 ( int8_t ch ) {
     }
 }
 
-char * bt_base32_encode ( TALLOC_CTX * ctx, uint8_t * src, size_t src_length, size_t * result_length ) {
+char * bt_base32_encode ( void * ctx, uint8_t * src, size_t src_length, size_t * result_length ) {
     if ( !src_length ) {
         return NULL;
     }
@@ -101,7 +103,7 @@ char * bt_base32_encode ( TALLOC_CTX * ctx, uint8_t * src, size_t src_length, si
     length = length * 8 + 1;
 
     size_t result_index = 0;
-    char * result       = talloc_array ( ctx, char, length );
+    char * result       = talloc ( ctx, sizeof ( char ) * length );
     if ( !result ) {
         return NULL;
     }
@@ -169,7 +171,7 @@ int8_t from_base64 ( int8_t ch ) {
     }
 }
 
-uint8_t * bt_base64_decode ( TALLOC_CTX * ctx, char * src, size_t src_length, size_t * result_length ) {
+uint8_t * bt_base64_decode ( void * ctx, char * src, size_t src_length, size_t * result_length ) {
     if ( !src_length ) {
         return NULL;
     }
@@ -206,7 +208,7 @@ uint8_t * bt_base64_decode ( TALLOC_CTX * ctx, char * src, size_t src_length, si
     uint8_t  buffer_size  = 0;
 
     size_t result_index = 0;
-    uint8_t * result    = talloc_array ( ctx, uint8_t, length );
+    uint8_t * result    = talloc ( ctx, sizeof ( uint8_t ) * length );
     if ( !result ) {
         return NULL;
     }
@@ -251,7 +253,7 @@ int8_t to_base64 ( int8_t ch ) {
     }
 }
 
-char * bt_base64_encode ( TALLOC_CTX * ctx, uint8_t * src, size_t src_length, size_t * result_length ) {
+char * bt_base64_encode ( void * ctx, uint8_t * src, size_t src_length, size_t * result_length ) {
     if ( !src_length ) {
         return NULL;
     }
@@ -264,7 +266,7 @@ char * bt_base64_encode ( TALLOC_CTX * ctx, uint8_t * src, size_t src_length, si
     length = length * 8 + 1;
 
     size_t result_index = 0;
-    char * result       = talloc_array ( ctx, char, length );
+    char * result       = talloc ( ctx, sizeof ( char ) * length );
     if ( !result ) {
         return NULL;
     }

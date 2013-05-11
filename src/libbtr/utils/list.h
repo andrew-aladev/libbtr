@@ -7,13 +7,7 @@
 #define UTILS_LIST_H
 
 #include <stdbool.h>
-#include <talloc.h>
-
-// use this list
-// 1. create new list
-// 2. append pointers
-// 3. copy list to array
-// 4. delete list
+#include <talloc/tree.h>
 
 typedef struct bt_list_node {
     void * data;
@@ -27,8 +21,8 @@ typedef struct bt_list {
 } bt_list;
 
 extern inline
-bt_list * bt_list_create ( TALLOC_CTX * ctx ) {
-    bt_list * list = talloc ( ctx, bt_list );
+bt_list * bt_list_create ( void * ctx ) {
+    bt_list * list = talloc ( ctx, sizeof ( bt_list ) );
     if ( !list ) {
         return NULL;
     }
@@ -41,7 +35,7 @@ bt_list * bt_list_create ( TALLOC_CTX * ctx ) {
 
 extern inline
 bool bt_list_append ( bt_list * list, void * data ) {
-    bt_list_node * node = talloc ( list, bt_list_node );
+    bt_list_node * node = talloc ( list, sizeof ( bt_list_node ) );
     if ( !node ) {
         return false;
     }

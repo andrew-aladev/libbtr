@@ -9,11 +9,11 @@
 #define BTIH_H
 
 #include <stdint.h>
-#include <talloc.h>
+#include <stddef.h>
 
-uint8_t * bt_base32_decode ( TALLOC_CTX * ctx, char * src,    size_t src_length, size_t * result_length );
-char *    bt_base32_encode ( TALLOC_CTX * ctx, uint8_t * src, size_t src_length, size_t * result_length );
-uint8_t * bt_base64_decode ( TALLOC_CTX * ctx, char * src,    size_t src_length, size_t * result_length );
-char *    bt_base64_encode ( TALLOC_CTX * ctx, uint8_t * src, size_t src_length, size_t * result_length );
+uint8_t * bt_base32_decode ( void * ctx, char * src,    size_t src_length, size_t * result_length );
+char *    bt_base32_encode ( void * ctx, uint8_t * src, size_t src_length, size_t * result_length );
+uint8_t * bt_base64_decode ( void * ctx, char * src,    size_t src_length, size_t * result_length );
+char *    bt_base64_encode ( void * ctx, uint8_t * src, size_t src_length, size_t * result_length );
 
 #endif

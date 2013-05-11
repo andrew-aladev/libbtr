@@ -6,19 +6,21 @@
 #ifndef UTILS_URL_H
 #define UTILS_URL_H
 
+#include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include <talloc.h>
+#include <talloc/tree.h>
+#include <talloc/helpers.h>
 
 // see http://www.ietf.org/rfc/rfc1738.txt
 extern inline
-char * bt_unescape ( TALLOC_CTX * ctx, char * url ) {
+char * bt_unescape ( void * ctx, char * url ) {
     if ( !url ) {
         return NULL;
     }
 
     size_t url_length = strlen ( url );
-    char * buffer     = talloc_array ( ctx, char, url_length + 1 );
+    char * buffer     = talloc ( ctx, sizeof ( char ) * ( url_length + 1 ) );
     if ( !buffer ) {
         return NULL;
     }

@@ -6,16 +6,16 @@
 #ifndef UTILS_ITOA_H
 #define UTILS_ITOA_H
 
-#include <talloc.h>
 #include <stdint.h>
 #include <math.h>
+#include <talloc/tree.h>
 
 extern inline
-char * bt_size_t_to_str ( TALLOC_CTX * ctx, size_t number ) {
+char * bt_size_t_to_str ( void * ctx, size_t number ) {
     char * result;
 
     if ( !number ) {
-        result    = talloc_array ( ctx, char, 2 );
+        result = talloc ( ctx, sizeof ( char ) * 2 );
         if ( !result ) {
             return NULL;
         }
@@ -26,7 +26,7 @@ char * bt_size_t_to_str ( TALLOC_CTX * ctx, size_t number ) {
 
     // size of number + 1 for '\0'
     uint8_t length = ( uint8_t ) floor ( log10 ( number ) ) + 2;
-    result = talloc_array ( ctx, char, length );
+    result = talloc ( ctx, sizeof ( char ) * length );
     if ( !result ) {
         return NULL;
     }
@@ -40,7 +40,7 @@ char * bt_size_t_to_str ( TALLOC_CTX * ctx, size_t number ) {
         number /= 10;
         *walk  = '0' + digit;
     }
-    
+
     return result;
 }
 

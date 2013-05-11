@@ -6,11 +6,11 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include <talloc.h>
+#include <talloc/tree.h>
 #include <libbtr/utils/url.h>
 
 int main() {
-    TALLOC_CTX * ctx = talloc_new ( NULL );
+    void * ctx = talloc_new ( NULL );
     if ( !ctx ) {
         talloc_free ( ctx );
         return 1;

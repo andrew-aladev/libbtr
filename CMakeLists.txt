@@ -2,15 +2,17 @@ cmake_minimum_required(VERSION 2.8)
 project(libbtr)
 
 set(CMAKE_VERBOSE_MAKEFILE on)
-
 set(CMAKE_BUILD_TYPE Debug)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror -std=gnu99 -pedantic")
-set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -g")
-
-add_subdirectory(src)
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src/")
-link_directories("${CMAKE_CURRENT_SOURCE_DIR}/src/libbtr")
-
 enable_testing()
+
+add_subdirectory(talloc)
+include_directories("talloc/src/")
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -std=gnu99")
+set(CMAKE_C_FLAGS_DEBUG "-g -DDEBUG")
+add_subdirectory(src)
+
+include_directories("src/")
+
 add_subdirectory(tests)
-add_subdirectory(examples)
+# add_subdirectory(examples)

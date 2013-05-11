@@ -5,7 +5,8 @@
 
 #include <stdbool.h>
 #include <string.h>
-#include <talloc.h>
+#include <talloc/tree.h>
+#include <talloc/helpers.h>
 #include "magnet.h"
 #include "utils/list.h"
 #include "utils/url.h"
@@ -59,7 +60,7 @@ bool append_link_to_list ( bt_magnet_info * info, bt_list * list, char * value, 
     return true;
 }
 
-bt_magnet_info * bt_magnet_parse ( TALLOC_CTX * ctx, char * uri ) {
+bt_magnet_info * bt_magnet_parse ( void * ctx, char * uri ) {
     if ( !uri ) {
         return NULL;
     }
@@ -68,17 +69,17 @@ bt_magnet_info * bt_magnet_parse ( TALLOC_CTX * ctx, char * uri ) {
         return NULL;
     }
 
-    bt_magnet_info * info = talloc ( ctx, bt_magnet_info );
+    bt_magnet_info * info = talloc ( ctx, sizeof ( bt_magnet_info ) );
     if ( !info ) {
         return NULL;
     }
 
-    TALLOC_CTX * trackers_ctx = talloc_new ( info );
+    void * trackers_ctx = talloc_new ( info );
     if ( !trackers_ctx ) {
         talloc_free ( info );
         return NULL;
     }
-    TALLOC_CTX * webseeds_ctx = talloc_new ( info );
+    void * webseeds_ctx = talloc_new ( info );
     if ( !webseeds_ctx ) {
         talloc_free ( info );
         return NULL;
@@ -233,12 +234,12 @@ bt_magnet_info * bt_magnet_parse ( TALLOC_CTX * ctx, char * uri ) {
     info->trackers_count  = trackers_count;
     info->webseeds_count  = webseeds_count;
 
-    info->trackers = talloc_array ( info, char *, trackers_count );
+    info->trackers = talloc ( info, sizeof ( char * ) * trackers_count );
     if ( !info->trackers ) {
         talloc_free ( info );
         return NULL;
     }
-    info->webseeds = talloc_array ( info, char *, webseeds_count );
+    info->webseeds = talloc ( info, sizeof ( char * ) * webseeds_count );
     if ( !info->trackers ) {
         talloc_free ( info );
         return NULL;
