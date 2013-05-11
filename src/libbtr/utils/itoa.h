@@ -8,6 +8,7 @@
 
 #include <stdint.h>
 #include <math.h>
+
 #include <talloc/tree.h>
 
 extern inline
@@ -16,7 +17,7 @@ char * bt_size_t_to_str ( void * ctx, size_t number ) {
 
     if ( !number ) {
         result = talloc ( ctx, sizeof ( char ) * 2 );
-        if ( !result ) {
+        if ( result == NULL ) {
             return NULL;
         }
         result[0] = '0';
@@ -27,7 +28,7 @@ char * bt_size_t_to_str ( void * ctx, size_t number ) {
     // size of number + 1 for '\0'
     uint8_t length = ( uint8_t ) floor ( log10 ( number ) ) + 2;
     result = talloc ( ctx, sizeof ( char ) * length );
-    if ( !result ) {
+    if ( result == NULL ) {
         return NULL;
     }
     result[length - 1] = '\0';

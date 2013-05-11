@@ -12,7 +12,7 @@
 
 int main() {
     void * ctx = talloc_new ( NULL );
-    if ( !ctx ) {
+    if ( ctx == NULL ) {
         talloc_free ( ctx );
         return 1;
     }
@@ -26,6 +26,12 @@ int main() {
 
     str = bt_size_t_to_str ( ctx, 123456 );
     if ( strcmp ( str, "123456" ) ) {
+        return 2;
+    }
+    talloc_free ( str );
+    
+    str = bt_size_t_to_str ( ctx, 987654 );
+    if ( strcmp ( str, "987654" ) ) {
         return 2;
     }
     talloc_free ( str );

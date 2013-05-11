@@ -50,10 +50,10 @@ uint8_t * bt_base32_decode ( void * ctx, char * src, size_t src_length, size_t *
     size_t length       = bits / 8;
     size_t result_index = 0;
     uint8_t * result    = talloc ( ctx, sizeof ( uint8_t ) * length );
-    if ( !result ) {
+    if ( result == NULL ) {
         return NULL;
     }
-    *result_length = length;
+    * result_length = length;
 
     uint32_t buffer       = 0;
     uint8_t  buffer_size  = 0;
@@ -104,7 +104,7 @@ char * bt_base32_encode ( void * ctx, uint8_t * src, size_t src_length, size_t *
 
     size_t result_index = 0;
     char * result       = talloc ( ctx, sizeof ( char ) * length );
-    if ( !result ) {
+    if ( result == NULL ) {
         return NULL;
     }
     *result_length = length;
@@ -209,7 +209,7 @@ uint8_t * bt_base64_decode ( void * ctx, char * src, size_t src_length, size_t *
 
     size_t result_index = 0;
     uint8_t * result    = talloc ( ctx, sizeof ( uint8_t ) * length );
-    if ( !result ) {
+    if ( result == NULL ) {
         return NULL;
     }
     *result_length = length;
@@ -267,7 +267,7 @@ char * bt_base64_encode ( void * ctx, uint8_t * src, size_t src_length, size_t *
 
     size_t result_index = 0;
     char * result       = talloc ( ctx, sizeof ( char ) * length );
-    if ( !result ) {
+    if ( result == NULL ) {
         return NULL;
     }
     *result_length = length;

@@ -11,7 +11,7 @@
 
 int main() {
     void * ctx = talloc_new ( NULL );
-    if ( !ctx ) {
+    if ( ctx == NULL ) {
         talloc_free ( ctx );
         return 1;
     }
@@ -19,31 +19,41 @@ int main() {
 
     // should return NULL
     url = bt_unescape ( ctx, NULL );
-    if ( url ) {
+    if ( url != NULL ) {
         talloc_free ( ctx );
         return 1;
     }
     url = bt_unescape ( ctx, "%" );
-    if ( url ) {
+    if ( url != NULL ) {
         talloc_free ( ctx );
         return 1;
     }
     url = bt_unescape ( ctx, "%1" );
-    if ( url ) {
+    if ( url != NULL ) {
         talloc_free ( ctx );
         return 2;
     }
 
     //should return unescaped url
     url = bt_unescape ( ctx, "Gentoo+Linux+20121221+LiveDVD+-+End+Of+World+Edition+%28amd64%29" );
-    if ( !url || strcmp ( url, "Gentoo Linux 20121221 LiveDVD - End Of World Edition (amd64)" ) ) {
+    if (
+        ! (
+            url != NULL &&
+            !strcmp ( url, "Gentoo Linux 20121221 LiveDVD - End Of World Edition (amd64)" )
+        )
+    ) {
         talloc_free ( ctx );
         return 3;
     }
     talloc_free ( url );
 
     url = bt_unescape ( ctx, "udp%3A%2F%2Ftracker.openbittorrent.com%3A80" );
-    if ( !url || strcmp ( url, "udp://tracker.openbittorrent.com:80" ) ) {
+    if (
+        ! (
+            url != NULL &&
+            !strcmp ( url, "udp://tracker.openbittorrent.com:80" )
+        )
+    ) {
         talloc_free ( ctx );
         return 4;
     }

@@ -9,19 +9,20 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+
 #include <talloc/tree.h>
 #include <talloc/helpers.h>
 
 // see http://www.ietf.org/rfc/rfc1738.txt
 extern inline
 char * bt_unescape ( void * ctx, char * url ) {
-    if ( !url ) {
+    if ( url == NULL ) {
         return NULL;
     }
 
     size_t url_length = strlen ( url );
     char * buffer     = talloc ( ctx, sizeof ( char ) * ( url_length + 1 ) );
-    if ( !buffer ) {
+    if ( buffer == NULL ) {
         return NULL;
     }
 
@@ -43,7 +44,7 @@ char * bt_unescape ( void * ctx, char * url ) {
             }
 
             char * hex = talloc_strndup ( buffer, walk_url, 2 );
-            if ( !hex ) {
+            if ( hex == NULL ) {
                 talloc_free ( buffer );
                 return NULL;
             }
@@ -63,7 +64,7 @@ char * bt_unescape ( void * ctx, char * url ) {
 
     *walk_buffer = '\0';
     char * result = talloc_strdup ( ctx, buffer );
-    if ( !result ) {
+    if ( result == NULL ) {
         talloc_free ( buffer );
         return NULL;
     }

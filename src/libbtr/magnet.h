@@ -8,7 +8,9 @@
 
 #include <stdint.h>
 
-// See specification http://www.bittorrent.org/beps/bep_0009.html 
+#include "utils/dynarr.h"
+
+// See specification http://www.bittorrent.org/beps/bep_0009.html
 //   additions https://trac.transmissionbt.com/ticket/5134
 //   additions https://trac.transmissionbt.com/ticket/2631
 
@@ -18,16 +20,13 @@
 #define BT_HASH_BASE64_SRC  40
 #define BT_HASH_BASE64_INFO 30
 
-typedef struct bt_magnet_info {
-    uint8_t * hash;
-    size_t    hash_length;
-    char *    display_name;
-    char **   trackers;
-    size_t    trackers_count;
-    char **   webseeds;
-    size_t    webseeds_count;
-}
-bt_magnet_info;
+typedef struct bt_magnet_info_t {
+    uint8_t *   hash;
+    size_t      hash_length;
+    char *      display_name;
+    bt_dynarr * trackers;
+    bt_dynarr * webseeds;
+} bt_magnet_info;
 
 bt_magnet_info * bt_magnet_parse ( void * root, char * uri );
 
