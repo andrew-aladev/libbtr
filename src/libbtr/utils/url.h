@@ -63,14 +63,7 @@ char * bt_unescape ( void * ctx, char * url ) {
     }
 
     *walk_buffer = '\0';
-    char * result = talloc_strdup ( ctx, buffer );
-    if ( result == NULL ) {
-        talloc_free ( buffer );
-        return NULL;
-    }
-
-    talloc_free ( buffer );
-    return result;
+    return buffer;
 }
 
 #endif

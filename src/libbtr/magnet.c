@@ -16,11 +16,11 @@
 
 static inline
 uint8_t set_hash ( bt_magnet_info * info, char * value, size_t value_size ) {
-    uint8_t * hash;
-    if ( value_size == BT_HASH_BASE32_SRC + 9 ) {
-        hash = bt_base32_decode ( info, value + 9, BT_HASH_BASE32_SRC, & info->hash_length );
-    } else if ( value_size == BT_HASH_BASE64_SRC + 9 ) {
-        hash = bt_base64_decode ( info, value + 9, BT_HASH_BASE64_SRC, & info->hash_length );
+    bt_hash * hash;
+    if ( value_size == BT_HASH_BASE32_SRC ) {
+        hash = bt_base32_decode ( info, value, BT_HASH_BASE32_SRC );
+    } else if ( value_size == BT_HASH_BASE64_SRC ) {
+        hash = bt_base64_decode ( info, value, BT_HASH_BASE64_SRC );
     } else {
         return 1;
     }
@@ -70,6 +70,8 @@ uint8_t set_key_value ( bt_magnet_info * info, char * key, size_t key_size, char
     if ( key_size == 2 ) {
         if ( !strncmp ( key, "xt", 2 ) && !strncmp ( value, "urn:btih:", 9 ) ) {
             // xt=urn:btih:${hash}
+            value      += 9;
+            value_size -= 9;
             if ( set_hash ( info, value, value_size ) ) {
                 return 1;
             }
@@ -172,16 +174,15 @@ bt_magnet_info * bt_magnet_parse ( void * ctx, char * uri ) {
     }
 
     info->hash = NULL;
-    info->hash_length = 0;
 
     // spec has no limit to trackers count
-    info->trackers = bt_dynarr_new ( info, 16 );
+    info->trackers = bt_dynarr_new ( info, 2 );
     if ( info->trackers == NULL ) {
         talloc_free ( info );
         return NULL;
     }
     // spec has no limit to webseeds count
-    info->webseeds = bt_dynarr_new ( info, 16 );
+    info->webseeds = bt_dynarr_new ( info, 2 );
     if ( info->webseeds == NULL ) {
         talloc_free ( info );
         return NULL;

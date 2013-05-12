@@ -11,9 +11,14 @@
 #include <stdint.h>
 #include <stddef.h>
 
-uint8_t * bt_base32_decode ( void * ctx, char * src,    size_t src_length, size_t * result_length );
-char *    bt_base32_encode ( void * ctx, uint8_t * src, size_t src_length, size_t * result_length );
-uint8_t * bt_base64_decode ( void * ctx, char * src,    size_t src_length, size_t * result_length );
-char *    bt_base64_encode ( void * ctx, uint8_t * src, size_t src_length, size_t * result_length );
+typedef struct bt_hash_t {
+    uint8_t * binary;
+    size_t    length;
+} bt_hash;
+
+bt_hash * bt_base32_decode ( void * ctx, char * src,     size_t src_length );
+char *    bt_base32_encode ( void * ctx, bt_hash * hash, size_t * result_length );
+bt_hash * bt_base64_decode ( void * ctx, char * src,     size_t src_length );
+char *    bt_base64_encode ( void * ctx, bt_hash * hash, size_t * result_length );
 
 #endif

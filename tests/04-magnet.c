@@ -99,8 +99,8 @@ int main() {
     if (
         ! (
             info != NULL &&
-            info->hash_length == sizeof ( hash_1 ) &&
-            !memcmp ( info->hash, hash_1, sizeof ( hash_1 ) )
+            info->hash->length == sizeof ( hash_1 ) &&
+            !memcmp ( info->hash->binary, hash_1, sizeof ( hash_1 ) )
         )
     ) {
         talloc_free ( ctx );
@@ -119,8 +119,8 @@ int main() {
     if (
         ! (
             info != NULL &&
-            info->hash_length == sizeof ( hash_2 ) &&
-            !memcmp ( info->hash, hash_2, sizeof ( hash_2 ) ) &&
+            info->hash->length == sizeof ( hash_2 ) &&
+            !memcmp ( info->hash->binary, hash_2, sizeof ( hash_2 ) ) &&
             bt_dynarr_get_length ( info->trackers ) == 4 &&
             !strcmp ( info->display_name, "Gentoo Linux 20121221 LiveDVD - End Of World Edition (amd64)" ) &&
             !strcmp ( ( char * ) bt_dynarr_get ( info->trackers, 0 ),  "udp://tracker.openbittorrent.com:80" ) &&
@@ -145,8 +145,8 @@ int main() {
     if (
         ! (
             info != NULL &&
-            info->hash_length == sizeof ( hash_3 ) &&
-            !memcmp ( info->hash, hash_3, sizeof ( hash_3 ) ) &&
+            info->hash->length == sizeof ( hash_3 ) &&
+            !memcmp ( info->hash->binary, hash_3, sizeof ( hash_3 ) ) &&
             bt_dynarr_get_length ( info->trackers ) == 4 &&
             !strcmp ( info->display_name, "Gentoo Linux 20121221 LiveDVD - End Of World Edition (amd64)" ) &&
             !strcmp ( ( char * ) bt_dynarr_get ( info->trackers, 0 ),  "udp://tracker.openbittorrent.com:80" ) &&
@@ -170,8 +170,8 @@ int main() {
     if (
         ! (
             info != NULL &&
-            info->hash_length == sizeof ( hash_3 ) &&
-            !memcmp ( info->hash, hash_3, sizeof ( hash_3 ) ) &&
+            info->hash->length == sizeof ( hash_3 ) &&
+            !memcmp ( info->hash->binary, hash_3, sizeof ( hash_3 ) ) &&
             bt_dynarr_get_length ( info->trackers ) == 4 &&
             !strcmp ( info->display_name, "Gentoo Linux 20121221 LiveDVD - End Of World Edition (amd64)" ) &&
             !strcmp ( ( char * ) bt_dynarr_get ( info->trackers, 0 ),  "udp://tracker.openbittorrent.com:80" ) &&
@@ -197,8 +197,8 @@ int main() {
     if (
         ! (
             info != NULL &&
-            info->hash_length == sizeof ( hash_3 ) &&
-            !memcmp ( info->hash, hash_3, sizeof ( hash_3 ) ) &&
+            info->hash->length == sizeof ( hash_3 ) &&
+            !memcmp ( info->hash->binary, hash_3, sizeof ( hash_3 ) ) &&
             bt_dynarr_get_length ( info->trackers ) == 4 &&
             !strcmp ( info->display_name, "Gentoo Linux 20121221 LiveDVD - End Of World Edition (amd64)" ) &&
             !strcmp ( ( char * ) bt_dynarr_get ( info->trackers, 0 ),  "udp://tracker.openbittorrent.com:80" ) &&
