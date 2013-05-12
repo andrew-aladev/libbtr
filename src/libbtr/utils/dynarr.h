@@ -55,10 +55,8 @@ extern inline
 uint8_t bt_dynarr_append ( bt_dynarr * arr, void * pointer ) {
     size_t index = arr->length;
     arr->length++;
-    if ( arr->length > arr->current_capacity ) {
-        if ( bt_dynarr_grow ( arr ) ) {
-            return 1;
-        }
+    if ( arr->length > arr->current_capacity && bt_dynarr_grow ( arr ) ) {
+        return 1;
     }
     arr->data[index] = pointer;
     return 0;
