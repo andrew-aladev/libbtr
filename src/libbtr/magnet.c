@@ -174,6 +174,7 @@ bt_magnet_info * bt_magnet_parse ( void * ctx, char * uri ) {
     }
 
     info->hash = NULL;
+    info->display_name = NULL;
 
     info->trackers = bt_dynarr_new ( info, 16 );
     if ( info->trackers == NULL ) {
