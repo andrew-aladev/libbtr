@@ -23,6 +23,10 @@ typedef struct bt_dynarr_t {
 
 extern inline
 bt_dynarr * bt_dynarr_new ( void * ctx, size_t capacity ) {
+    if ( !capacity ) {
+        return NULL;
+    }
+
     bt_dynarr * arr = talloc ( ctx, sizeof ( bt_dynarr ) );
     if ( arr == NULL ) {
         return NULL;

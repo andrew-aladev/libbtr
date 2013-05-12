@@ -175,14 +175,12 @@ bt_magnet_info * bt_magnet_parse ( void * ctx, char * uri ) {
 
     info->hash = NULL;
 
-    // spec has no limit to trackers count
-    info->trackers = bt_dynarr_new ( info, 2 );
+    info->trackers = bt_dynarr_new ( info, 16 );
     if ( info->trackers == NULL ) {
         talloc_free ( info );
         return NULL;
     }
-    // spec has no limit to webseeds count
-    info->webseeds = bt_dynarr_new ( info, 2 );
+    info->webseeds = bt_dynarr_new ( info, 16 );
     if ( info->webseeds == NULL ) {
         talloc_free ( info );
         return NULL;
