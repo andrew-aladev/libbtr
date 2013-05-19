@@ -31,4 +31,7 @@ extern inline
 uint8_t bt_list_append ( bt_list * list, void * data );
 
 extern inline
+void bt_list_free ( void * current_list );
+
+extern inline
 size_t bt_list_get_length ( bt_list * list );

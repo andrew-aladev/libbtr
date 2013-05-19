@@ -23,7 +23,7 @@ typedef struct bt_list_t {
     size_t length;
 } bt_list;
 
-static
+inline
 void bt_list_free ( void * current_list ) {
     bt_list * list      = current_list;
     bt_list_item * item = list->last_item;
