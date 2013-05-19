@@ -5,8 +5,8 @@
 
 // See specification http://www.ietf.org/rfc/rfc4648.txt
 
-#ifndef BTIH_H
-#define BTIH_H
+#ifndef LIBBTR_BTIH_H
+#define LIBBTR_BTIH_H
 
 #include <stdint.h>
 #include <stddef.h>

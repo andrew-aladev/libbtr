@@ -3,8 +3,8 @@
 // libbtr is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Lesser Public License for more details.
 // You should have received a copy of the GNU General Lesser Public License along with libbtr. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef UTILS_DYNARR_H
-#define UTILS_DYNARR_H
+#ifndef LIBBTR_UTILS_DYNARR_H
+#define LIBBTR_UTILS_DYNARR_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,7 +21,7 @@ typedef struct bt_dynarr_t {
     void ** data;
 } bt_dynarr;
 
-extern inline
+inline
 bt_dynarr * bt_dynarr_new ( void * ctx, size_t capacity ) {
     if ( !capacity ) {
         return NULL;
@@ -43,7 +43,7 @@ bt_dynarr * bt_dynarr_new ( void * ctx, size_t capacity ) {
     return arr;
 }
 
-extern inline
+inline
 uint8_t bt_dynarr_grow ( bt_dynarr * arr ) {
     // linear growth
     arr->current_capacity = arr->current_capacity + arr->start_capacity;
@@ -55,31 +55,30 @@ uint8_t bt_dynarr_grow ( bt_dynarr * arr ) {
     return 0;
 }
 
-extern inline
-uint8_t bt_dynarr_append ( bt_dynarr * arr, void * pointer ) {
+inline
+uint8_t bt_dynarr_append ( bt_dynarr * arr, void * data ) {
     size_t index = arr->length;
     arr->length++;
     if ( arr->length > arr->current_capacity && bt_dynarr_grow ( arr ) ) {
         return 1;
     }
-    arr->data[index] = pointer;
+    arr->data[index] = data;
     return 0;
 }
 
-extern inline
+inline
 void bt_dynarr_set ( bt_dynarr * arr, size_t position, void * pointer ) {
     arr->data[position] = pointer;
 }
 
-extern inline
+inline
 void * bt_dynarr_get ( bt_dynarr * arr, size_t position ) {
     return arr->data[position];
 }
 
-extern inline
+inline
 size_t bt_dynarr_get_length ( bt_dynarr * arr ) {
     return arr->length;
 }
 
 #endif
-

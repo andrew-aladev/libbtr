@@ -1,18 +1,18 @@
-cmake_minimum_required(VERSION 2.8)
-project(libbtr)
+cmake_minimum_required (VERSION 2.8)
+project (libbtr)
 
-set(CMAKE_VERBOSE_MAKEFILE on)
-set(CMAKE_BUILD_TYPE Debug)
-enable_testing()
+set (CMAKE_VERBOSE_MAKEFILE on)
+set (CMAKE_BUILD_TYPE Debug)
+enable_testing ()
 
-add_subdirectory(talloc)
-include_directories("talloc/src/")
+add_subdirectory (talloc)
+include_directories ("talloc/src/")
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -std=gnu99")
-set(CMAKE_C_FLAGS_DEBUG "-g -DDEBUG")
-add_subdirectory(src)
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Winline -std=gnu99")
+set (CMAKE_C_FLAGS_DEBUG "-O2 -g -DDEBUG")
+add_subdirectory (src)
 
-include_directories("src/")
+include_directories ("src/")
 
-add_subdirectory(tests)
-# add_subdirectory(examples)
+add_subdirectory (tests)
+# add_subdirectory (examples)

@@ -7,18 +7,14 @@
 #include <stdint.h>
 
 #include <talloc/helpers.h>
-#include <libbtr/utils/dynarr.h>
+#include <libbtr/utils/list.h>
 
-static bt_dynarr * arr;
+static bt_list * list;
 static size_t a, b;
 
 bool test_init ( void * ctx ) {
-    arr = bt_dynarr_new ( ctx, 0 );
-    if ( arr != NULL ) {
-        return false;
-    }
-    arr = bt_dynarr_new ( ctx, 2 );
-    if ( arr == NULL ) {
+    list = bt_list_new ( ctx );
+    if ( list == NULL ) {
         return false;
     }
     return true;
@@ -27,15 +23,15 @@ bool test_init ( void * ctx ) {
 bool test_append () {
     if (
         ! (
-            !bt_dynarr_append ( arr, &a ) &&
-            !bt_dynarr_append ( arr, &a ) &&
-            !bt_dynarr_append ( arr, &b ) &&
-            !bt_dynarr_append ( arr, &a ) &&
-            !bt_dynarr_append ( arr, &a ) &&
-            !bt_dynarr_append ( arr, &b ) &&
-            !bt_dynarr_append ( arr, &a ) &&
-            !bt_dynarr_append ( arr, &b ) &&
-            !bt_dynarr_append ( arr, &b )
+            !bt_list_append ( list, &a ) &&
+            !bt_list_append ( list, &a ) &&
+            !bt_list_append ( list, &b ) &&
+            !bt_list_append ( list, &a ) &&
+            !bt_list_append ( list, &a ) &&
+            !bt_list_append ( list, &b ) &&
+            !bt_list_append ( list, &a ) &&
+            !bt_list_append ( list, &b ) &&
+            !bt_list_append ( list, &b )
         )
     ) {
         return false;
@@ -44,21 +40,21 @@ bool test_append () {
 }
 
 bool test_data () {
-    bt_dynarr_set ( arr, 3, &b );
-    bt_dynarr_set ( arr, 2, &a );
-
+    bt_list_item * item = list->last_item;
     if (
         ! (
-            bt_dynarr_get_length ( arr ) == 9 &&
-            bt_dynarr_get ( arr, 0 ) == &a &&
-            bt_dynarr_get ( arr, 1 ) == &a &&
-            bt_dynarr_get ( arr, 2 ) == &a &&
-            bt_dynarr_get ( arr, 3 ) == &b &&
-            bt_dynarr_get ( arr, 4 ) == &a &&
-            bt_dynarr_get ( arr, 5 ) == &b &&
-            bt_dynarr_get ( arr, 6 ) == &a &&
-            bt_dynarr_get ( arr, 7 ) == &b &&
-            bt_dynarr_get ( arr, 8 ) == &b
+            bt_list_get_length ( list ) == 9 &&
+            item != NULL &&
+
+            item->data == &b && ( item = item->prev ) != NULL &&
+            item->data == &b && ( item = item->prev ) != NULL &&
+            item->data == &a && ( item = item->prev ) != NULL &&
+            item->data == &b && ( item = item->prev ) != NULL &&
+            item->data == &a && ( item = item->prev ) != NULL &&
+            item->data == &a && ( item = item->prev ) != NULL &&
+            item->data == &b && ( item = item->prev ) != NULL &&
+            item->data == &a && ( item = item->prev ) != NULL &&
+            item->data == &a
         )
     ) {
         return false;

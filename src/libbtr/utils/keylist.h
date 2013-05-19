@@ -3,11 +3,26 @@
 // libbtr is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Lesser Public License for more details.
 // You should have received a copy of the GNU General Lesser Public License along with libbtr. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef LIBBTR_UTILS_ITOA_H
-#define LIBBTR_UTILS_ITOA_H
+#ifndef LIBBTR_UTILS_KEYLIST_H
+#define LIBBTR_UTILS_KEYLIST_H
 
-#include <stddef.h>
+#include "dynarr.h"
 
-char * bt_size_t_to_str ( void * ctx, size_t number );
+#include <stdint.h>
+
+enum {
+    BT_MAGNET_KEYLIST_EXPLICIT = 1,
+    BT_MAGNET_KEYLIST_IMPLICIT,
+    BT_MAGNET_KEYLIST_MIXED
+};
+
+typedef struct bt_magnet_keylist_t {
+    uint8_t mode;
+    bt_dynarr * arr;
+} bt_magnet_keylist;
+
+bt_magnet_keylist * bt_magnet_keylist_new ( void * ctx ) {
+    return NULL;
+}
 
 #endif

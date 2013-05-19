@@ -3,11 +3,32 @@
 // libbtr is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Lesser Public License for more details.
 // You should have received a copy of the GNU General Lesser Public License along with libbtr. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef LIBBTR_UTILS_ITOA_H
-#define LIBBTR_UTILS_ITOA_H
+#include "dynarr.h"
+#include "list.h"
 
-#include <stddef.h>
+extern inline
+bt_dynarr * bt_dynarr_new ( void * ctx, size_t capacity );
 
-char * bt_size_t_to_str ( void * ctx, size_t number );
+extern inline
+uint8_t bt_dynarr_grow ( bt_dynarr * arr );
 
-#endif
+extern inline
+uint8_t bt_dynarr_append ( bt_dynarr * arr, void * pointer );
+
+extern inline
+void bt_dynarr_set ( bt_dynarr * arr, size_t position, void * pointer );
+
+extern inline
+void * bt_dynarr_get ( bt_dynarr * arr, size_t position );
+
+extern inline
+size_t bt_dynarr_get_length ( bt_dynarr * arr );
+
+extern inline
+bt_list * bt_list_new ( void * ctx );
+
+extern inline
+uint8_t bt_list_append ( bt_list * list, void * data );
+
+extern inline
+size_t bt_list_get_length ( bt_list * list );

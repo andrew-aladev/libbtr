@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <talloc/tree.h>
 #include <talloc/helpers.h>
 #include <libbtr/utils/itoa.h>
 
