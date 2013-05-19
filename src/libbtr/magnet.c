@@ -7,7 +7,7 @@
 
 #include "magnet.h"
 #include "btih.h"
-#include "utils/dynarr.h"
+#include "utils/list.h"
 #include "utils/url.h"
 #include "utils/itoa.h"
 
@@ -49,7 +49,7 @@ uint8_t set_display_name ( bt_magnet_info * info, char * value, size_t value_siz
 }
 
 static inline
-uint8_t append_link_to_list ( bt_magnet_info * info, bt_dynarr * list, char * value, size_t value_size ) {
+uint8_t append_link_to_list ( bt_magnet_info * info, bt_list * list, char * value, size_t value_size ) {
     char * link = talloc_strndup ( info, value, value_size );
     if ( link == NULL ) {
         return 1;
@@ -59,7 +59,7 @@ uint8_t append_link_to_list ( bt_magnet_info * info, bt_dynarr * list, char * va
     if ( escaped_link == NULL ) {
         return 2;
     }
-    if ( bt_dynarr_append ( list, escaped_link ) ) {
+    if ( bt_list_append ( list, escaped_link ) ) {
         return 3;
     }
     return 0;
@@ -111,7 +111,7 @@ uint8_t set_key_value ( bt_magnet_info * info, char * key, size_t key_size, char
             key      += 3;
             key_size -= 3;
 
-            size_t trackers_length = bt_dynarr_get_length ( info->trackers );
+            size_t trackers_length = bt_list_get_length ( info->trackers );
             if ( trackers_length ) {
                 char * tracker_index = bt_size_t_to_str ( info, * next_tracker_index );
                 if ( tracker_index == NULL ) {
@@ -176,12 +176,12 @@ bt_magnet_info * bt_magnet_parse ( void * ctx, char * uri ) {
     info->hash = NULL;
     info->display_name = NULL;
 
-    info->trackers = bt_dynarr_new ( info, 16 );
+    info->trackers = bt_list_new ( info );
     if ( info->trackers == NULL ) {
         talloc_free ( info );
         return NULL;
     }
-    info->webseeds = bt_dynarr_new ( info, 16 );
+    info->webseeds = bt_list_new ( info );
     if ( info->webseeds == NULL ) {
         talloc_free ( info );
         return NULL;

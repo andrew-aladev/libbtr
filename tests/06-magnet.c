@@ -90,30 +90,37 @@ bool test_magnet_valid (
     if (
         ! (
             info->trackers != NULL &&
-            bt_dynarr_get_length ( info->trackers ) == trackers_length
+            bt_list_get_length ( info->trackers ) == trackers_length
         )
     ) {
         return false;
     }
-    size_t i;
-    for ( i = 0; i < trackers_length; i++ ) {
-        if ( strcmp ( trackers[i], bt_dynarr_get ( info->trackers, i ) ) ) {
+    bt_list_item * item = info->trackers->last_item;
+    size_t i = trackers_length - 1;
+    while ( item != NULL ) {
+        if ( strcmp ( trackers[i], item->data ) ) {
             return false;
         }
+        item = item->prev;
+        i--;
     }
 
     if (
         ! (
             info->webseeds != NULL &&
-            bt_dynarr_get_length ( info->webseeds ) == webseeds_length
+            bt_list_get_length ( info->webseeds ) == webseeds_length
         )
     ) {
         return false;
     }
-    for ( i = 0; i < webseeds_length; i++ ) {
-        if ( strcmp ( webseeds[i], bt_dynarr_get ( info->webseeds, i ) ) ) {
+    item = info->webseeds->last_item;
+    i = webseeds_length - 1;
+    while ( item != NULL ) {
+        if ( strcmp ( webseeds[i], item->data ) ) {
             return false;
         }
+        item = item->prev;
+        i--;
     }
 
     talloc_free ( info );

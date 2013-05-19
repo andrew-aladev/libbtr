@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 2.8)
 project (libbtr)
 
-set (CMAKE_VERBOSE_MAKEFILE on)
+set (CMAKE_VERBOSE_MAKEFILE false)
 set (CMAKE_BUILD_TYPE Debug)
 enable_testing ()
 
