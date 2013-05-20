@@ -9,7 +9,7 @@ add_subdirectory (talloc)
 include_directories ("talloc/src/")
 
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Winline -std=gnu99")
-set (CMAKE_C_FLAGS_DEBUG "-O2 -g")
+set (CMAKE_C_FLAGS_DEBUG "-O0 -g")
 add_subdirectory (src)
 
 include_directories ("src/")

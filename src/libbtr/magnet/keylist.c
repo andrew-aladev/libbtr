@@ -3,35 +3,16 @@
 // libbtr is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Lesser Public License for more details.
 // You should have received a copy of the GNU General Lesser Public License along with libbtr. If not, see <http://www.gnu.org/licenses/>.
 
-#include "dynarr.h"
-#include "list.h"
+#include "keylist.h"
 
 extern inline
-bt_dynarr * bt_dynarr_new ( void * ctx, size_t capacity );
+bt_magnet_keylist * bt_magnet_keylist_new ( bt_list * list );
 
 extern inline
-uint8_t bt_dynarr_grow ( bt_dynarr * arr );
+uint8_t bt_magnet_keylist_indexed ( bt_magnet_keylist * keylist, char * key, size_t key_size );
 
 extern inline
-uint8_t bt_dynarr_append ( bt_dynarr * arr, void * pointer );
+uint8_t bt_magnet_keylist_strict ( bt_magnet_keylist * keylist );
 
 extern inline
-void bt_dynarr_set ( bt_dynarr * arr, size_t position, void * pointer );
-
-extern inline
-void * bt_dynarr_get ( bt_dynarr * arr, size_t position );
-
-extern inline
-size_t bt_dynarr_get_length ( bt_dynarr * arr );
-
-extern inline
-bt_list * bt_list_new ( void * ctx );
-
-extern inline
-uint8_t bt_list_append ( bt_list * list, void * data );
-
-extern inline
-void bt_list_free ( void * current_list );
-
-extern inline
-size_t bt_list_get_length ( bt_list * list );
+uint8_t bt_magnet_keylist_append ( bt_magnet_keylist * keylist, char * key, size_t key_size, char * value );

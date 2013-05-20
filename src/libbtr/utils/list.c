@@ -3,12 +3,16 @@
 // libbtr is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Lesser Public License for more details.
 // You should have received a copy of the GNU General Lesser Public License along with libbtr. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef LIBBTR_UTILS_URL_H
-#define LIBBTR_UTILS_URL_H
+#include "list.h"
 
-#include <stddef.h>
+extern inline
+bt_list * bt_list_new ( void * ctx );
 
-// see http://www.ietf.org/rfc/rfc1738.txt
-char * bt_unescape ( void * ctx, const char * url, size_t length );
+extern inline
+uint8_t bt_list_append ( bt_list * list, void * data );
 
-#endif
+extern inline
+void bt_list_free ( void * current_list );
+
+extern inline
+size_t bt_list_get_length ( bt_list * list );

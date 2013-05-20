@@ -14,9 +14,10 @@
 bool test_null ( void * ctx ) {
     if (
         ! (
-            bt_unescape ( ctx, NULL ) == NULL &&
-            bt_unescape ( ctx, "%" )  == NULL &&
-            bt_unescape ( ctx, "%1" ) == NULL
+            bt_unescape ( ctx, NULL, 0 ) == NULL &&
+            bt_unescape ( ctx, "", 0 )   == NULL &&
+            bt_unescape ( ctx, "%", strlen ( "%" ) )   == NULL &&
+            bt_unescape ( ctx, "%1", strlen ( "%1" ) ) == NULL
         )
     ) {
         return false;
@@ -25,7 +26,7 @@ bool test_null ( void * ctx ) {
 }
 
 bool test_url ( void * ctx, char * encoded_url, char * decoded_url ) {
-    char * url = bt_unescape ( ctx, encoded_url );
+    char * url = bt_unescape ( ctx, encoded_url, strlen ( encoded_url ) );
     if (
         ! (
             url != NULL &&

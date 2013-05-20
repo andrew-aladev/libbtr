@@ -7,9 +7,8 @@
 
 #include "magnet.h"
 #include "btih.h"
-#include "utils/list.h"
+#include "magnet/keylist.h"
 #include "utils/url.h"
-#include "utils/itoa.h"
 
 #include <talloc/tree.h>
 #include <talloc/helpers.h>
@@ -33,40 +32,7 @@ uint8_t set_hash ( bt_magnet_info * info, char * value, size_t value_size ) {
 }
 
 static inline
-uint8_t set_display_name ( bt_magnet_info * info, char * value, size_t value_size ) {
-    char * display_name = talloc_strndup ( info, value, value_size );
-    if ( display_name == NULL ) {
-        return 1;
-    }
-    char * display_name_escaped = bt_unescape ( info, display_name );
-    talloc_free ( display_name );
-    if ( display_name_escaped == NULL ) {
-        return 2;
-    }
-
-    info->display_name = display_name_escaped;
-    return 0;
-}
-
-static inline
-uint8_t append_link_to_list ( bt_magnet_info * info, bt_list * list, char * value, size_t value_size ) {
-    char * link = talloc_strndup ( info, value, value_size );
-    if ( link == NULL ) {
-        return 1;
-    }
-    char * escaped_link = bt_unescape ( info, link );
-    talloc_free ( link );
-    if ( escaped_link == NULL ) {
-        return 2;
-    }
-    if ( bt_list_append ( list, escaped_link ) ) {
-        return 3;
-    }
-    return 0;
-}
-
-static inline
-uint8_t set_key_value ( bt_magnet_info * info, char * key, size_t key_size, char * value, size_t value_size, size_t * next_tracker_index, uint8_t * trackers_mode ) {
+uint8_t set_key_value ( bt_magnet_info * info, bt_magnet_keylist * trackers, char * key, size_t key_size, char * value, size_t value_size ) {
     if ( key_size == 2 ) {
         if ( !strncmp ( key, "xt", 2 ) && !strncmp ( value, "urn:btih:", 9 ) ) {
             // xt=urn:btih:${hash}
@@ -75,88 +41,42 @@ uint8_t set_key_value ( bt_magnet_info * info, char * key, size_t key_size, char
             if ( set_hash ( info, value, value_size ) ) {
                 return 1;
             }
+            return 0;
         } else if ( !strncmp ( key, "dn", 2 ) ) {
             // dn=${display_name}
-            if ( set_display_name ( info, value, value_size ) ) {
+            char * display_name = bt_unescape ( info, value, value_size );
+            if ( display_name == NULL ) {
                 return 2;
             }
-        } else if ( !strncmp ( key, "tr", 2 ) ) {
-            // tr=${tracker}
-            size_t mode = * trackers_mode;
-            if ( mode == 2 ) {
-                return 3;
-            } else if ( !mode ) {
-                * trackers_mode = 1;
-            }
-            if ( append_link_to_list ( info, info->trackers, value, value_size ) ) {
-                return 3;
-            }
+            info->display_name = display_name;
+            return 0;
         } else if ( !strncmp ( key, "ws", 2 ) ) {
             // ws=${webseed}
-            if ( append_link_to_list ( info, info->webseeds, value, value_size ) ) {
+            char * link = bt_unescape ( info, value, value_size );
+            if ( link == NULL ) {
+                return 3;
+            }
+            if ( bt_list_append ( info->webseeds, link ) ) {
                 return 4;
             }
-        }
-    } else {
-        if ( !strncmp ( key, "tr.", 3 ) ) {
-            // tr.${tr_i}=${tracker}
-            // both (tr.0, tr.1, ...) and (tr.1, tr.2, ...) are allowed
-            size_t mode = * trackers_mode;
-            if ( mode == 1 ) {
-                return 3;
-            } else if ( !mode ) {
-                * trackers_mode = 2;
-            }
-
-            key      += 3;
-            key_size -= 3;
-
-            size_t trackers_length = bt_list_get_length ( info->trackers );
-            if ( trackers_length ) {
-                char * tracker_index = bt_size_t_to_str ( info, * next_tracker_index );
-                if ( tracker_index == NULL ) {
-                    return 5;
-                }
-                if ( key_size == strlen ( tracker_index ) && !strncmp ( key, tracker_index, key_size ) ) {
-                    talloc_free ( tracker_index );
-                    if ( append_link_to_list ( info, info->trackers, value, value_size ) ) {
-                        return 5;
-                    }
-                    ( * next_tracker_index ) ++;
-                } else {
-                    // unknown key
-                    talloc_free ( tracker_index );
-                    return 5;
-                }
-            } else {
-                if ( key_size == 1 ) {
-                    char first_char_of_key = * key;
-
-                    if ( first_char_of_key == '0' ) {
-                        if ( append_link_to_list ( info, info->trackers, value, value_size ) ) {
-                            return 5;
-                        }
-                        * next_tracker_index = 1;
-                    } else if ( first_char_of_key == '1' ) {
-                        if ( append_link_to_list ( info, info->trackers, value, value_size ) ) {
-                            return 6;
-                        }
-                        * next_tracker_index = 2;
-                    } else {
-                        // unknown key
-                        return 7;
-                    }
-                } else {
-                    // unknown key
-                    return 8;
-                }
-            }
-        } else {
-            return 7;
+            return 0;
         }
     }
 
-    return 0;
+    if ( !strncmp ( key, "tr", 2 ) ) {
+        key      += 2;
+        key_size -= 2;
+        char * link = bt_unescape ( info, value, value_size );
+        if ( link == NULL ) {
+            return 5;
+        }
+        if ( bt_magnet_keylist_append ( trackers, key, key_size, link ) ) {
+            return 6;
+        }
+        return 0;
+    }
+
+    return 7;
 }
 
 bt_magnet_info * bt_magnet_parse ( void * ctx, char * uri ) {
@@ -181,6 +101,12 @@ bt_magnet_info * bt_magnet_parse ( void * ctx, char * uri ) {
         talloc_free ( info );
         return NULL;
     }
+    bt_magnet_keylist * trackers = bt_magnet_keylist_new ( info->trackers );
+    if ( trackers == NULL ) {
+        talloc_free ( info );
+        return NULL;
+    }
+
     info->webseeds = bt_list_new ( info );
     if ( info->webseeds == NULL ) {
         talloc_free ( info );
@@ -189,9 +115,6 @@ bt_magnet_info * bt_magnet_parse ( void * ctx, char * uri ) {
 
     char * walk       = uri + 8;
     size_t uri_length = strlen ( uri );
-
-    uint8_t trackers_mode      = 0;
-    size_t  next_tracker_index = 0;
 
     size_t key_size;
     size_t value_size;
@@ -217,7 +140,7 @@ bt_magnet_info * bt_magnet_parse ( void * ctx, char * uri ) {
             walk++;
         }
 
-        if ( set_key_value ( info, key, key_size, value, value_size, & next_tracker_index, & trackers_mode ) ) {
+        if ( set_key_value ( info, trackers, key, key_size, value, value_size ) ) {
             talloc_free ( info );
             return NULL;
         }
@@ -228,6 +151,8 @@ bt_magnet_info * bt_magnet_parse ( void * ctx, char * uri ) {
         talloc_free ( info );
         return NULL;
     }
+    
+    talloc_free ( trackers );
 
     return info;
 }

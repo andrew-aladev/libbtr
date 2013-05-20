@@ -26,8 +26,18 @@ bool test_null ( void * ctx ) {
             test_magnet_null ( ctx, "magnet:?xt=urn:btih:7018b750d7be55ba6b05" ) &&
             test_magnet_null ( ctx, "magnet:?xt=urn:tree:tiger:7N5OAMRNGMSSEUE3ORHOKWN4WWIQ5X4EBOOTLJY" ) &&
             test_magnet_null ( ctx,
+                               "&dn=Gentoo+Linux+20121221+LiveDVD+-+End+Of+World+Edition+%28amd64%29" ) &&
+            test_magnet_null ( ctx,
                                "magnet:?xt=urn:btih:2f833c7a0a51890238e68c7057686e46e9b15f17"
-                               "&dn=Gentoo+Linux+20121221+LiveDVD+-+End+Of+World+Edition+%28amd64%29"
+                               "&tr-1=udp%3A%2F%2Ftracker.openbittorrent.com%3A80" ) &&
+            test_magnet_null ( ctx,
+                               "magnet:?xt=urn:btih:2f833c7a0a51890238e68c7057686e46e9b15f17"
+                               "&tr%=udp%3A%2F%2Ftracker.openbittorrent.com%3A80" ) &&
+            test_magnet_null ( ctx,
+                               "magnet:?xt=urn:btih:2f833c7a0a51890238e68c7057686e46e9b15f17"
+                               "&tr.2=udp%3A%2F%2Ftracker.openbittorrent.com%3A80" ) &&
+            test_magnet_null ( ctx,
+                               "magnet:?xt=urn:btih:2f833c7a0a51890238e68c7057686e46e9b15f17"
                                "&tr.1=udp%3A%2F%2Ftracker.openbittorrent.com%3A80"
                                "&tr=udp%3A%2F%2Ftracker.publicbt.com%3A80"
                                "&tr.3=udp%3A%2F%2Ftracker.istole.it%3A6969"
@@ -41,7 +51,6 @@ bool test_null ( void * ctx ) {
                                "&tr.3=udp%3A%2F%2Ftracker.ccc.de%3A80" ) &&
             test_magnet_null ( ctx,
                                "magnet:?xt=urn:btih:2f833c7a0a51890238e68c7057686e46e9b15f17"
-                               "&dn=Gentoo+Linux+20121221+LiveDVD+-+End+Of+World+Edition+%28amd64%29"
                                "&tr.2=udp%3A%2F%2Ftracker.openbittorrent.com%3A80"
                                "&tr.1=udp%3A%2F%2Ftracker.publicbt.com%3A80"
                                "&tr.3=udp%3A%2F%2Ftracker.istole.it%3A6969"
@@ -135,7 +144,11 @@ bool test_valid ( void * ctx ) {
     char * webseeds[] = {"http://dl.com/path/to/file", "http://dl.org/path/to/file"};
     if (
         ! (
-            test_magnet_valid ( ctx, "magnet:?xt=urn:btih:IJBDPDSBT4QZLBIJ6NX7LITSZHZQ7F5I", hash_1, sizeof ( hash_1 ), NULL, NULL, 0, NULL, 0 ) &&
+            test_magnet_valid ( ctx,
+                                "magnet:?xt=urn:btih:IJBDPDSBT4QZLBIJ6NX7LITSZHZQ7F5I",
+                                hash_1, sizeof ( hash_1 ),
+                                NULL,
+                                NULL, 0, NULL, 0 ) &&
             test_magnet_valid ( ctx,
                                 "magnet:?xt=urn:btih:f502f11df1c29b5ca8e5c2fa50abcbf59b1d274f"
                                 "&dn=Gentoo+Linux+20121221+LiveDVD+-+End+Of+World+Edition+%28amd64%29"

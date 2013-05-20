@@ -12,20 +12,22 @@
 #include <talloc/tree.h>
 #include <talloc/helpers.h>
 
-char * bt_unescape ( void * ctx, const char * url ) {
+char * bt_unescape ( void * ctx, const char * url, size_t length ) {
     if ( url == NULL ) {
         return NULL;
     }
+    if ( !length ) {
+        return NULL;
+    }
 
-    size_t url_length = strlen ( url );
-    char * buffer     = talloc ( ctx, sizeof ( char ) * ( url_length + 1 ) );
+    char * buffer = talloc ( ctx, sizeof ( char ) * ( length + 1 ) );
     if ( buffer == NULL ) {
         return NULL;
     }
 
     const char * walk_url = url;
     char * walk_buffer = buffer;
-    const char * end_url     = url + url_length;
+    const char * end_url     = url + length;
     char ch;
 
     while ( walk_url != end_url ) {
