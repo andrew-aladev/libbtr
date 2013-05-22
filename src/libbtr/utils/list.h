@@ -11,7 +11,7 @@
 #include <stdlib.h>
 
 #include <talloc/tree.h>
-#include <talloc/ext.h>
+#include <talloc/ext/destructor.h>
 
 typedef struct bt_list_item_t {
     struct bt_list_item_t * prev;
