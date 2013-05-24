@@ -12,7 +12,8 @@
 #include <talloc/tree.h>
 #include <talloc/helpers.h>
 
-char * bt_unescape ( void * ctx, const char * url, size_t length ) {
+char * bt_unescape ( void * ctx, const char * url, size_t length )
+{
     if ( url == NULL ) {
         return NULL;
     }

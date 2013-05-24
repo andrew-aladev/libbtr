@@ -24,7 +24,8 @@ typedef struct bt_list_t {
 } bt_list;
 
 inline
-void bt_list_free ( void * current_list ) {
+void bt_list_free ( void * current_list )
+{
     bt_list * list      = current_list;
     bt_list_item * item = list->last_item;
     bt_list_item * prev_item;
@@ -36,7 +37,8 @@ void bt_list_free ( void * current_list ) {
 }
 
 inline
-bt_list * bt_list_new ( void * ctx ) {
+bt_list * bt_list_new ( void * ctx )
+{
     bt_list * list = talloc ( ctx, sizeof ( bt_list ) );
     if ( list == NULL ) {
         return NULL;
@@ -49,21 +51,23 @@ bt_list * bt_list_new ( void * ctx ) {
 }
 
 inline
-uint8_t bt_list_append ( bt_list * list, void * data ) {
+uint8_t bt_list_append ( bt_list * list, void * data )
+{
     bt_list_item * item = malloc ( sizeof ( bt_list_item ) );
     if ( item == NULL ) {
         return 1;
     }
     item->data = data;
     item->prev = list->last_item;
-    
+
     list->last_item = item;
     list->length++;
     return 0;
 }
 
 inline
-size_t bt_list_get_length ( bt_list * list ) {
+size_t bt_list_get_length ( bt_list * list )
+{
     return list->length;
 }
 

@@ -22,7 +22,8 @@ typedef struct bt_dynarr_t {
 } bt_dynarr;
 
 inline
-bt_dynarr * bt_dynarr_new ( void * ctx, size_t capacity ) {
+bt_dynarr * bt_dynarr_new ( void * ctx, size_t capacity )
+{
     if ( !capacity ) {
         return NULL;
     }
@@ -44,7 +45,8 @@ bt_dynarr * bt_dynarr_new ( void * ctx, size_t capacity ) {
 }
 
 inline
-uint8_t bt_dynarr_grow ( bt_dynarr * arr ) {
+uint8_t bt_dynarr_grow ( bt_dynarr * arr )
+{
     // linear growth
     arr->current_capacity = arr->current_capacity + arr->start_capacity;
     void ** reallocated_data = talloc_realloc ( arr->data, arr->current_capacity * sizeof ( uintptr_t ) );
@@ -56,7 +58,8 @@ uint8_t bt_dynarr_grow ( bt_dynarr * arr ) {
 }
 
 inline
-uint8_t bt_dynarr_append ( bt_dynarr * arr, void * data ) {
+uint8_t bt_dynarr_append ( bt_dynarr * arr, void * data )
+{
     size_t index = arr->length;
     arr->length++;
     if ( arr->length > arr->current_capacity && bt_dynarr_grow ( arr ) ) {
@@ -67,17 +70,20 @@ uint8_t bt_dynarr_append ( bt_dynarr * arr, void * data ) {
 }
 
 inline
-void bt_dynarr_set ( bt_dynarr * arr, size_t position, void * pointer ) {
+void bt_dynarr_set ( bt_dynarr * arr, size_t position, void * pointer )
+{
     arr->data[position] = pointer;
 }
 
 inline
-void * bt_dynarr_get ( bt_dynarr * arr, size_t position ) {
+void * bt_dynarr_get ( bt_dynarr * arr, size_t position )
+{
     return arr->data[position];
 }
 
 inline
-size_t bt_dynarr_get_length ( bt_dynarr * arr ) {
+size_t bt_dynarr_get_length ( bt_dynarr * arr )
+{
     return arr->length;
 }
 

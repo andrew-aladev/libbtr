@@ -14,7 +14,8 @@
 #include <talloc/helpers.h>
 
 static inline
-uint8_t set_hash ( bt_magnet_info * info, char * value, size_t value_size ) {
+uint8_t set_hash ( bt_magnet_info * info, char * value, size_t value_size )
+{
     bt_hash * hash;
     if ( value_size == BT_HASH_BASE32_SRC ) {
         hash = bt_base32_decode ( info, value, BT_HASH_BASE32_SRC );
@@ -32,7 +33,8 @@ uint8_t set_hash ( bt_magnet_info * info, char * value, size_t value_size ) {
 }
 
 static inline
-uint8_t set_key_value ( bt_magnet_info * info, bt_magnet_keylist * trackers, char * key, size_t key_size, char * value, size_t value_size ) {
+uint8_t set_key_value ( bt_magnet_info * info, bt_magnet_keylist * trackers, char * key, size_t key_size, char * value, size_t value_size )
+{
     if ( key_size == 2 ) {
         if ( !strncmp ( key, "xt", 2 ) && !strncmp ( value, "urn:btih:", 9 ) ) {
             // xt=urn:btih:${hash}
@@ -79,7 +81,8 @@ uint8_t set_key_value ( bt_magnet_info * info, bt_magnet_keylist * trackers, cha
     return 7;
 }
 
-bt_magnet_info * bt_magnet_parse ( void * ctx, char * uri ) {
+bt_magnet_info * bt_magnet_parse ( void * ctx, char * uri )
+{
     if ( uri == NULL ) {
         return NULL;
     }
@@ -151,7 +154,7 @@ bt_magnet_info * bt_magnet_parse ( void * ctx, char * uri ) {
         talloc_free ( info );
         return NULL;
     }
-    
+
     talloc_free ( trackers );
 
     return info;

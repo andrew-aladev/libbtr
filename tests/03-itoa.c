@@ -11,7 +11,8 @@
 #include <talloc/helpers.h>
 #include <libbtr/utils/itoa.h>
 
-bool test_number ( void * ctx, size_t number, char * answer ) {
+bool test_number ( void * ctx, size_t number, char * answer )
+{
     char * result = bt_size_t_to_str ( ctx, number );
     if (
         ! (
@@ -25,7 +26,8 @@ bool test_number ( void * ctx, size_t number, char * answer ) {
     return true;
 }
 
-bool test ( void * ctx ) {
+bool test ( void * ctx )
+{
     if (
         ! (
             test_number ( ctx, 0, "0" )           &&
@@ -38,7 +40,8 @@ bool test ( void * ctx ) {
     return true;
 }
 
-int main() {
+int main()
+{
     void * ctx = talloc_new ( NULL );
     if ( ctx == NULL ) {
         talloc_free ( ctx );

@@ -10,7 +10,8 @@
 typedef int8_t ( * convert_char ) ( int8_t ch );
 
 static inline
-int8_t from_base32 ( int8_t ch ) {
+int8_t from_base32 ( int8_t ch )
+{
     if ( ch >= 'a' && ch <= 'z' ) {
         return ch - 'a';
     } else if ( ch >= 'A' && ch <= 'Z' ) {
@@ -22,7 +23,8 @@ int8_t from_base32 ( int8_t ch ) {
     }
 }
 static inline
-int8_t to_base32 ( int8_t ch ) {
+int8_t to_base32 ( int8_t ch )
+{
     if ( ch >= 0 && ch <= 25 ) {
         return ch + 'a';
     } else if ( ch >= 26 && ch <= 31 ) {
@@ -33,7 +35,8 @@ int8_t to_base32 ( int8_t ch ) {
 }
 
 static inline
-int8_t from_base64 ( int8_t ch ) {
+int8_t from_base64 ( int8_t ch )
+{
     if ( ch >= 'a' && ch <= 'z' ) {
         return ch - 'a' + 26;
     } else if ( ch >= 'A' && ch <= 'Z' ) {
@@ -49,7 +52,8 @@ int8_t from_base64 ( int8_t ch ) {
     }
 }
 static inline
-int8_t to_base64 ( int8_t ch ) {
+int8_t to_base64 ( int8_t ch )
+{
     if ( ch >= 0 && ch <= 25 ) {
         return ch + 'A';
     } else if ( ch >= 26 && ch <= 51 ) {
@@ -66,7 +70,8 @@ int8_t to_base64 ( int8_t ch ) {
 }
 
 static inline
-uint8_t _decode ( bt_hash * hash, char * src, size_t src_length, uint8_t significant_bits, convert_char convert ) {
+uint8_t _decode ( bt_hash * hash, char * src, size_t src_length, uint8_t significant_bits, convert_char convert )
+{
     size_t bits = src_length * significant_bits;
     if ( bits % 8 ) {
         // not properly padded string
@@ -127,7 +132,8 @@ uint8_t _decode ( bt_hash * hash, char * src, size_t src_length, uint8_t signifi
 }
 
 static inline
-size_t _get_encoded_size ( bt_hash * hash, uint8_t significant_bits ) {
+size_t _get_encoded_size ( bt_hash * hash, uint8_t significant_bits )
+{
     size_t src_length = hash->length;
     size_t length = src_length / significant_bits;
     if ( src_length % significant_bits ) {
@@ -138,7 +144,8 @@ size_t _get_encoded_size ( bt_hash * hash, uint8_t significant_bits ) {
 }
 
 static inline
-uint8_t _encode ( char * result, bt_hash * hash, size_t length, uint8_t significant_bits, convert_char convert ) {
+uint8_t _encode ( char * result, bt_hash * hash, size_t length, uint8_t significant_bits, convert_char convert )
+{
     int8_t    ch;
     size_t    result_index = 0;
     uint8_t * walk             = hash->binary;
@@ -185,7 +192,8 @@ uint8_t _encode ( char * result, bt_hash * hash, size_t length, uint8_t signific
 }
 
 static inline
-bt_hash * _base_decode ( void * ctx, char * src, size_t src_length, uint8_t significant_bits, convert_char convert ) {
+bt_hash * _base_decode ( void * ctx, char * src, size_t src_length, uint8_t significant_bits, convert_char convert )
+{
     if ( !src_length ) {
         return NULL;
     }
@@ -197,15 +205,18 @@ bt_hash * _base_decode ( void * ctx, char * src, size_t src_length, uint8_t sign
     }
     return hash;
 }
-bt_hash * bt_base32_decode ( void * ctx, char * src, size_t src_length ) {
+bt_hash * bt_base32_decode ( void * ctx, char * src, size_t src_length )
+{
     return _base_decode ( ctx, src, src_length, 5, from_base32 );
 }
-bt_hash * bt_base64_decode ( void * ctx, char * src, size_t src_length ) {
+bt_hash * bt_base64_decode ( void * ctx, char * src, size_t src_length )
+{
     return _base_decode ( ctx, src, src_length, 6, from_base64 );
 }
 
 static inline
-char * _base_encode ( void * ctx, bt_hash * hash, size_t * result_length, uint8_t significant_bits, convert_char convert ) {
+char * _base_encode ( void * ctx, bt_hash * hash, size_t * result_length, uint8_t significant_bits, convert_char convert )
+{
     size_t length = _get_encoded_size ( hash, significant_bits );
     if ( !length ) {
         return NULL;
@@ -222,9 +233,11 @@ char * _base_encode ( void * ctx, bt_hash * hash, size_t * result_length, uint8_
     result[length] = '\0';
     return result;
 }
-char * bt_base32_encode ( void * ctx, bt_hash * hash, size_t * result_length ) {
+char * bt_base32_encode ( void * ctx, bt_hash * hash, size_t * result_length )
+{
     return _base_encode ( ctx, hash, result_length, 5, to_base32 );
 }
-char * bt_base64_encode ( void * ctx, bt_hash * hash, size_t * result_length ) {
+char * bt_base64_encode ( void * ctx, bt_hash * hash, size_t * result_length )
+{
     return _base_encode ( ctx, hash, result_length, 6, to_base64 );
 }

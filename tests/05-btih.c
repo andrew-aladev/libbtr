@@ -11,22 +11,27 @@
 #include <talloc/helpers.h>
 #include <libbtr/btih.h>
 
-bool decode32_null ( void * ctx, char * str ) {
+bool decode32_null ( void * ctx, char * str )
+{
     return bt_base32_decode ( ctx, str, strlen ( str ) ) == NULL;
 }
-bool decode64_null ( void * ctx, char * str ) {
+bool decode64_null ( void * ctx, char * str )
+{
     return bt_base64_decode ( ctx, str, strlen ( str ) ) == NULL;
 }
-bool encode32_null ( void * ctx, bt_hash * hash ) {
+bool encode32_null ( void * ctx, bt_hash * hash )
+{
     size_t result_length;
     return bt_base32_encode ( ctx, hash, & result_length ) == NULL;
 }
-bool encode64_null ( void * ctx, bt_hash * hash ) {
+bool encode64_null ( void * ctx, bt_hash * hash )
+{
     size_t result_length;
     return bt_base64_encode ( ctx, hash, & result_length ) == NULL;
 }
 
-bool test_null ( void * ctx ) {
+bool test_null ( void * ctx )
+{
     bt_hash * empty_hash = talloc ( ctx, sizeof ( bt_hash ) );
     if ( empty_hash == NULL ) {
         return false;
@@ -58,7 +63,8 @@ bool test_null ( void * ctx ) {
     return true;
 }
 
-bool decode_valid ( bt_hash * result, uint8_t hash[], size_t length ) {
+bool decode_valid ( bt_hash * result, uint8_t hash[], size_t length )
+{
     if (
         ! (
             result != NULL &&
@@ -71,7 +77,8 @@ bool decode_valid ( bt_hash * result, uint8_t hash[], size_t length ) {
     talloc_free ( result );
     return true;
 }
-bool encode_valid ( char * result, size_t result_length, char * answer ) {
+bool encode_valid ( char * result, size_t result_length, char * answer )
+{
     if (
         ! (
             result != NULL &&
@@ -84,15 +91,18 @@ bool encode_valid ( char * result, size_t result_length, char * answer ) {
     talloc_free ( result );
     return true;
 }
-bool decode32_valid ( void * ctx, char * str, uint8_t hash[], size_t length ) {
+bool decode32_valid ( void * ctx, char * str, uint8_t hash[], size_t length )
+{
     bt_hash * result = bt_base32_decode ( ctx, str, strlen ( str ) );
     return decode_valid ( result, hash, length );
 }
-bool decode64_valid ( void * ctx, char * str, uint8_t hash[], size_t length ) {
+bool decode64_valid ( void * ctx, char * str, uint8_t hash[], size_t length )
+{
     bt_hash * result = bt_base64_decode ( ctx, str, strlen ( str ) );
     return decode_valid ( result, hash, length );
 }
-bt_hash * encode_set_hash ( void * ctx, uint8_t arr[], size_t length ) {
+bt_hash * encode_set_hash ( void * ctx, uint8_t arr[], size_t length )
+{
     bt_hash * hash = talloc ( ctx, sizeof ( bt_hash ) );
     if ( hash == NULL ) {
         return NULL;
@@ -101,7 +111,8 @@ bt_hash * encode_set_hash ( void * ctx, uint8_t arr[], size_t length ) {
     hash->length = length;
     return hash;
 }
-bool encode32_valid ( void * ctx, uint8_t arr[], size_t length, char * answer ) {
+bool encode32_valid ( void * ctx, uint8_t arr[], size_t length, char * answer )
+{
     bt_hash * hash = encode_set_hash ( ctx, arr, length );
     if ( hash == NULL ) {
         return false;
@@ -114,7 +125,8 @@ bool encode32_valid ( void * ctx, uint8_t arr[], size_t length, char * answer ) 
     }
     return encode_valid ( result, result_length, answer );
 }
-bool encode64_valid ( void * ctx, uint8_t arr[], size_t length, char * answer ) {
+bool encode64_valid ( void * ctx, uint8_t arr[], size_t length, char * answer )
+{
     bt_hash * hash = encode_set_hash ( ctx, arr, length );
     if ( hash == NULL ) {
         return false;
@@ -128,7 +140,8 @@ bool encode64_valid ( void * ctx, uint8_t arr[], size_t length, char * answer ) 
     return encode_valid ( result, result_length, answer );
 }
 
-bool test_valid ( void * ctx ) {
+bool test_valid ( void * ctx )
+{
     uint8_t hash_1[] = {'a', 'b', 'c'};
     uint8_t hash_2[] = {0x09, 0xA0, 0x75, 0x1E, 0x3D, 0xF3, 0xFC, 0x9D, 0xE8, 0xE6, 0x84, 0xC4, 0x23, 0x95, 0x00, 0xFD, 0x26, 0x7B, 0x10, 0xBE};
     uint8_t hash_3[] = {'a', 'b', 'c', 'd'};
@@ -153,7 +166,8 @@ bool test_valid ( void * ctx ) {
     return true;
 }
 
-int main () {
+int main ()
+{
     void * ctx = talloc_new ( NULL );
     if ( ctx == NULL ) {
         talloc_free ( ctx );

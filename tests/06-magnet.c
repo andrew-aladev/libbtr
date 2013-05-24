@@ -11,10 +11,12 @@
 #include <talloc/helpers.h>
 #include <libbtr/magnet.h>
 
-bool test_magnet_null ( void * ctx, char * str ) {
+bool test_magnet_null ( void * ctx, char * str )
+{
     return bt_magnet_parse ( ctx, str ) == NULL;
 }
-bool test_null ( void * ctx ) {
+bool test_null ( void * ctx )
+{
     if (
         ! (
             test_magnet_null ( ctx, NULL )          &&
@@ -67,7 +69,8 @@ bool test_magnet_valid (
     uint8_t * hash, size_t hash_length,
     char * display_name,
     char ** trackers, size_t trackers_length,
-    char ** webseeds, size_t webseeds_length ) {
+    char ** webseeds, size_t webseeds_length )
+{
 
     bt_magnet_info * info = bt_magnet_parse ( ctx, str );
     if (
@@ -136,7 +139,8 @@ bool test_magnet_valid (
     return true;
 }
 
-bool test_valid ( void * ctx ) {
+bool test_valid ( void * ctx )
+{
     uint8_t hash_1[] = { 0x42, 0x42, 0x37, 0x8E, 0x41, 0x9F, 0x21, 0x95, 0x85, 0x09, 0xF3, 0x6F, 0xF5, 0xA2, 0x72, 0xC9, 0xF3, 0x0F, 0x97, 0xA8 };
     uint8_t hash_2[] = { 0x7F, 0x9D, 0x36, 0x7F, 0x5D, 0x5D, 0x7F, 0x57, 0x36, 0xF5, 0xBE, 0x5C, 0x6B, 0xC7, 0xB9, 0x73, 0x67, 0xDA, 0xE7, 0x46, 0x9B, 0x71, 0xB7, 0xF9, 0xF5, 0xBD, 0x5D, 0xDB, 0xBE, 0x1F};
     uint8_t hash_3[] = { 0xD9, 0xFF, 0x37, 0xDD, 0xCE, 0xDA, 0xD1, 0xAE, 0x75, 0xF3, 0xDD, 0x36, 0xDF, 0xC7, 0xBA, 0xF1, 0xCE, 0xF4, 0xE7, 0xBE, 0xBC, 0xE9, 0xEE, 0x3A, 0x7B, 0xD6, 0xF5, 0xE5, 0xFD, 0x7B };
@@ -198,7 +202,8 @@ bool test_valid ( void * ctx ) {
     return true;
 }
 
-int main() {
+int main()
+{
     void * ctx = talloc_new ( NULL );
     if ( ctx == NULL ) {
         talloc_free ( ctx );

@@ -12,7 +12,8 @@
 static bt_list * list;
 static size_t a, b;
 
-bool test_init ( void * ctx ) {
+bool test_init ( void * ctx )
+{
     list = bt_list_new ( ctx );
     if ( list == NULL ) {
         return false;
@@ -20,7 +21,8 @@ bool test_init ( void * ctx ) {
     return true;
 }
 
-bool test_append () {
+bool test_append ()
+{
     if (
         ! (
             !bt_list_append ( list, &a ) &&
@@ -39,7 +41,8 @@ bool test_append () {
     return true;
 }
 
-bool test_data () {
+bool test_data ()
+{
     bt_list_item * item = list->last_item;
     if (
         ! (
@@ -62,7 +65,8 @@ bool test_data () {
     return true;
 }
 
-int main () {
+int main ()
+{
     void * ctx = talloc_new ( NULL );
     if ( ctx == NULL ) {
         talloc_free ( ctx );

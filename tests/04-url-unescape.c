@@ -11,7 +11,8 @@
 #include <talloc/helpers.h>
 #include <libbtr/utils/url.h>
 
-bool test_null ( void * ctx ) {
+bool test_null ( void * ctx )
+{
     if (
         ! (
             bt_unescape ( ctx, NULL, 0 ) == NULL &&
@@ -25,7 +26,8 @@ bool test_null ( void * ctx ) {
     return true;
 }
 
-bool test_url ( void * ctx, char * encoded_url, char * decoded_url ) {
+bool test_url ( void * ctx, char * encoded_url, char * decoded_url )
+{
     char * url = bt_unescape ( ctx, encoded_url, strlen ( encoded_url ) );
     if (
         ! (
@@ -39,7 +41,8 @@ bool test_url ( void * ctx, char * encoded_url, char * decoded_url ) {
     return true;
 }
 
-bool test_urls ( void * ctx ) {
+bool test_urls ( void * ctx )
+{
     if (
         ! (
             test_url ( ctx,
@@ -55,7 +58,8 @@ bool test_urls ( void * ctx ) {
     return true;
 }
 
-bool test_components ( void * ctx ) {
+bool test_components ( void * ctx )
+{
     if (
         ! (
             test_url ( ctx,
@@ -71,7 +75,8 @@ bool test_components ( void * ctx ) {
     return true;
 }
 
-int main() {
+int main()
+{
     void * ctx = talloc_new ( NULL );
     if ( ctx == NULL ) {
         talloc_free ( ctx );

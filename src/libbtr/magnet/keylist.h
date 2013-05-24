@@ -47,7 +47,8 @@ typedef struct bt_magnet_keylist_t {
 } bt_magnet_keylist;
 
 inline
-bt_magnet_keylist * bt_magnet_keylist_new ( bt_list * list ) {
+bt_magnet_keylist * bt_magnet_keylist_new ( bt_list * list )
+{
     bt_magnet_keylist * keylist = talloc ( list, sizeof ( bt_magnet_keylist ) );
     if ( keylist == NULL ) {
         return NULL;
@@ -58,7 +59,8 @@ bt_magnet_keylist * bt_magnet_keylist_new ( bt_list * list ) {
 }
 
 inline
-uint8_t bt_magnet_keylist_indexed ( bt_magnet_keylist * keylist, char * key, size_t key_size ) {
+uint8_t bt_magnet_keylist_indexed ( bt_magnet_keylist * keylist, char * key, size_t key_size )
+{
     if ( * key != '.' ) {
         return 1;
     }
@@ -100,7 +102,8 @@ uint8_t bt_magnet_keylist_indexed ( bt_magnet_keylist * keylist, char * key, siz
 }
 
 inline
-uint8_t bt_magnet_keylist_strict ( bt_magnet_keylist * keylist ) {
+uint8_t bt_magnet_keylist_strict ( bt_magnet_keylist * keylist )
+{
     if ( keylist->mode ) {
         if ( keylist->mode != BT_MAGNET_KEYLIST_STRICT ) {
             return 1;
@@ -112,7 +115,8 @@ uint8_t bt_magnet_keylist_strict ( bt_magnet_keylist * keylist ) {
 }
 
 inline
-uint8_t bt_magnet_keylist_append ( bt_magnet_keylist * keylist, char * key, size_t key_size, char * value ) {
+uint8_t bt_magnet_keylist_append ( bt_magnet_keylist * keylist, char * key, size_t key_size, char * value )
+{
     if ( key_size ) {
         if ( bt_magnet_keylist_indexed ( keylist, key, key_size ) ) {
             return 1;

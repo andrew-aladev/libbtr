@@ -12,7 +12,8 @@
 static bt_dynarr * arr;
 static size_t a, b;
 
-bool test_init ( void * ctx ) {
+bool test_init ( void * ctx )
+{
     arr = bt_dynarr_new ( ctx, 0 );
     if ( arr != NULL ) {
         return false;
@@ -24,7 +25,8 @@ bool test_init ( void * ctx ) {
     return true;
 }
 
-bool test_append () {
+bool test_append ()
+{
     if (
         ! (
             !bt_dynarr_append ( arr, &a ) &&
@@ -43,7 +45,8 @@ bool test_append () {
     return true;
 }
 
-bool test_data () {
+bool test_data ()
+{
     bt_dynarr_set ( arr, 3, &b );
     bt_dynarr_set ( arr, 2, &a );
 
@@ -66,7 +69,8 @@ bool test_data () {
     return true;
 }
 
-int main () {
+int main ()
+{
     void * ctx = talloc_new ( NULL );
     if ( ctx == NULL ) {
         talloc_free ( ctx );

@@ -9,7 +9,8 @@
 
 #include <talloc/tree.h>
 
-char * bt_size_t_to_str ( void * ctx, size_t number ) {
+char * bt_size_t_to_str ( void * ctx, size_t number )
+{
     char * result;
 
     if ( !number ) {
