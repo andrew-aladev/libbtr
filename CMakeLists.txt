@@ -1,6 +1,8 @@
 cmake_minimum_required (VERSION 2.8)
 project (libbtr)
 
+set (LIBBTR_STATIC true)
+
 set (CMAKE_VERBOSE_MAKEFILE false)
 set (CMAKE_BUILD_TYPE Debug)
 enable_testing ()
@@ -15,4 +17,3 @@ add_subdirectory (src)
 include_directories ("src/")
 
 add_subdirectory (tests)
-# add_subdirectory (examples)
