@@ -99,7 +99,7 @@ uint8_t _decode ( bt_hash * hash, char * src, size_t src_length, uint8_t signifi
         return 2;
     }
 
-    size_t   length       = bits / 8;
+    size_t   length       = bits >> 3; // bits / 8
     uint32_t buffer       = 0;
     uint8_t  buffer_size  = 0;
 
@@ -140,7 +140,7 @@ size_t _get_encoded_size ( bt_hash * hash, uint8_t significant_bits )
         // for padding
         length++;
     }
-    return length * 8;
+    return length << 3; // length * 3
 }
 
 static inline
