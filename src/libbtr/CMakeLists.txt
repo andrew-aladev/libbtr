@@ -4,8 +4,10 @@ set (SOURCES  magnet.c btih.c)
 add_subdirectory (utils)
 add_subdirectory (magnet)
 
-add_library (libbtr SHARED ${SOURCES})
-target_link_libraries (libbtr talloc m)
+if (LIBBTR_SHARED MATCHES true)
+    add_library (libbtr SHARED ${SOURCES})
+    target_link_libraries (libbtr talloc m)
+endif ()
 
 if (LIBBTR_STATIC MATCHES true)
     add_library (libbtr_static STATIC ${SOURCES})
