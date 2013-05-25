@@ -1,11 +1,15 @@
 cmake_minimum_required (VERSION 2.8)
 project (libbtr)
 
-set (LIBBTR_SHARED true)
-set (LIBBTR_STATIC true)
+if (NOT DEFINED LIBBTR_SHARED)
+    set (LIBBTR_SHARED true)
+endif ()
+if (NOT DEFINED LIBBTR_STATIC)
+    set (LIBBTR_STATIC true)
+endif ()
 
-set (CMAKE_VERBOSE_MAKEFILE false)
-set (CMAKE_BUILD_TYPE Debug)
+set (CMAKE_BUILD_TYPE DEBUG)
+
 enable_testing ()
 
 add_subdirectory (talloc)
