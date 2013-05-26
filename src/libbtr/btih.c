@@ -7,6 +7,7 @@
 
 #include <talloc/tree.h>
 
+// gcc will inline these functions
 typedef int8_t ( * convert_char ) ( int8_t ch );
 
 static inline
