@@ -141,7 +141,7 @@ size_t get_encoded_size ( bt_hash * hash, uint8_t significant_bits )
         // for padding
         length++;
     }
-    return length << 3; // length * 3
+    return length << 3; // length * 8
 }
 
 static inline
