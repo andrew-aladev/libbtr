@@ -146,6 +146,7 @@ bool test_valid ( void * ctx )
     uint8_t hash_2[] = {0x09, 0xA0, 0x75, 0x1E, 0x3D, 0xF3, 0xFC, 0x9D, 0xE8, 0xE6, 0x84, 0xC4, 0x23, 0x95, 0x00, 0xFD, 0x26, 0x7B, 0x10, 0xBE};
     uint8_t hash_3[] = {'a', 'b', 'c', 'd'};
     uint8_t hash_4[] = { 0xEF, 0x4D, 0x7C, 0x6F, 0xBE, 0x74, 0x77, 0xB6, 0xDE, 0xE7, 0x96, 0xDA, 0xE9, 0xBD, 0x39, 0x69, 0xC6, 0xB8, 0xDD, 0xD7, 0xDE, 0x6B, 0x5E, 0x1C, 0xF3, 0x9E, 0x74, 0xDB, 0x6D, 0xB9};
+    uint8_t hash_5[] = { 0x2e, 0x18, 0xd8, 0x25, 0xcf, 0x52, 0x5e, 0xd9, 0xbe, 0x0e, 0x0e, 0x68, 0xe9, 0xf6, 0xec, 0xdd, 0x50, 0x4d, 0xfb, 0x10 };
     if (
         ! (
             decode32_valid ( ctx, "MFRGG===", hash_1, sizeof ( hash_1 ) ) &&
@@ -153,12 +154,14 @@ bool test_valid ( void * ctx )
 
             decode64_valid ( ctx, "YWJjZA==", hash_3, sizeof ( hash_3 ) ) &&
             decode64_valid ( ctx, "7018b750d7be55ba6b05aca43dfea14c85502225", hash_4, sizeof ( hash_4 ) ) &&
+            decode64_valid ( ctx, "LhjYJc9SXtm+Dg5o6fbs3VBN+xA=", hash_5, sizeof ( hash_5 ) ) &&
 
             encode32_valid ( ctx, hash_1, sizeof ( hash_1 ), "mfrgg===" ) &&
             encode32_valid ( ctx, hash_2, sizeof ( hash_2 ), "bgqhkhr56p6j32hgqtcchfia7uthwef6" ) &&
 
             encode64_valid ( ctx, hash_3, sizeof ( hash_3 ), "YWJjZA==" ) &&
-            encode64_valid ( ctx, hash_4, sizeof ( hash_4 ), "7018b750d7be55ba6b05aca43dfea14c85502225" )
+            encode64_valid ( ctx, hash_4, sizeof ( hash_4 ), "7018b750d7be55ba6b05aca43dfea14c85502225" ) &&
+            encode64_valid ( ctx, hash_5, sizeof ( hash_5 ), "LhjYJc9SXtm+Dg5o6fbs3VBN+xA=" )
         )
     ) {
         return false;
