@@ -70,7 +70,7 @@ int8_t to_base64 ( int8_t ch )
 }
 
 static inline
-uint8_t _decode ( bt_hash * hash, char * src, size_t src_length, uint8_t significant_bits, convert_char convert )
+uint8_t decode ( bt_hash * hash, char * src, size_t src_length, uint8_t significant_bits, convert_char convert )
 {
     size_t bits = src_length * significant_bits;
     if ( bits % 8 ) {
@@ -132,7 +132,7 @@ uint8_t _decode ( bt_hash * hash, char * src, size_t src_length, uint8_t signifi
 }
 
 static inline
-size_t _get_encoded_size ( bt_hash * hash, uint8_t significant_bits )
+size_t get_encoded_size ( bt_hash * hash, uint8_t significant_bits )
 {
     size_t src_length = hash->length;
     size_t length = src_length / significant_bits;
@@ -144,7 +144,7 @@ size_t _get_encoded_size ( bt_hash * hash, uint8_t significant_bits )
 }
 
 static inline
-uint8_t _encode ( char * result, bt_hash * hash, size_t length, uint8_t significant_bits, convert_char convert )
+uint8_t encode ( char * result, bt_hash * hash, size_t length, uint8_t significant_bits, convert_char convert )
 {
     int8_t    ch;
     size_t    result_index = 0;
@@ -199,7 +199,7 @@ bt_hash * _base_decode ( void * ctx, char * src, size_t src_length, uint8_t sign
     }
 
     bt_hash * hash = talloc ( ctx, sizeof ( bt_hash ) );
-    if ( _decode ( hash, src, src_length, significant_bits, convert ) ) {
+    if ( decode ( hash, src, src_length, significant_bits, convert ) ) {
         talloc_free ( hash );
         return NULL;
     }
@@ -215,9 +215,9 @@ bt_hash * bt_base64_decode ( void * ctx, char * src, size_t src_length )
 }
 
 static inline
-char * _base_encode ( void * ctx, bt_hash * hash, size_t * result_length, uint8_t significant_bits, convert_char convert )
+char * base_encode ( void * ctx, bt_hash * hash, size_t * result_length, uint8_t significant_bits, convert_char convert )
 {
-    size_t length = _get_encoded_size ( hash, significant_bits );
+    size_t length = get_encoded_size ( hash, significant_bits );
     if ( !length ) {
         return NULL;
     }
@@ -226,7 +226,7 @@ char * _base_encode ( void * ctx, bt_hash * hash, size_t * result_length, uint8_
         return NULL;
     }
     * result_length = length;
-    if ( _encode ( result, hash, length, significant_bits, convert ) ) {
+    if ( encode ( result, hash, length, significant_bits, convert ) ) {
         talloc_free ( hash );
         return NULL;
     }
@@ -235,9 +235,9 @@ char * _base_encode ( void * ctx, bt_hash * hash, size_t * result_length, uint8_
 }
 char * bt_base32_encode ( void * ctx, bt_hash * hash, size_t * result_length )
 {
-    return _base_encode ( ctx, hash, result_length, 5, to_base32 );
+    return base_encode ( ctx, hash, result_length, 5, to_base32 );
 }
 char * bt_base64_encode ( void * ctx, bt_hash * hash, size_t * result_length )
 {
-    return _base_encode ( ctx, hash, result_length, 6, to_base64 );
+    return base_encode ( ctx, hash, result_length, 6, to_base64 );
 }
