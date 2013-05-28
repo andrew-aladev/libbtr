@@ -10,7 +10,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#include <talloc/tree.h>
+#include <talloc/helpers.h>
 #include <talloc/ext/destructor.h>
 
 typedef struct bt_list_item_t {
@@ -24,7 +24,7 @@ typedef struct bt_list_t {
 } bt_list;
 
 inline
-void bt_list_free ( void * current_list )
+uint8_t bt_list_free ( void * current_list )
 {
     bt_list * list      = current_list;
     bt_list_item * item = list->last_item;
@@ -34,6 +34,7 @@ void bt_list_free ( void * current_list )
         free ( item );
         item = prev_item;
     }
+    return 0;
 }
 
 inline

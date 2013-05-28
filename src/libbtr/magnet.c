@@ -10,7 +10,6 @@
 #include "magnet/keylist.h"
 #include "utils/url.h"
 
-#include <talloc/tree.h>
 #include <talloc/helpers.h>
 
 static inline

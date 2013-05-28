@@ -5,7 +5,7 @@
 
 #include "btih.h"
 
-#include <talloc/tree.h>
+#include <talloc/helpers.h>
 
 // gcc will inline these functions
 typedef int8_t ( * convert_char ) ( int8_t ch );

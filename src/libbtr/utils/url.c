@@ -9,7 +9,6 @@
 #include <stdbool.h>
 #include <string.h>
 
-#include <talloc/tree.h>
 #include <talloc/helpers.h>
 
 char * bt_unescape ( void * ctx, const char * url, size_t length )
