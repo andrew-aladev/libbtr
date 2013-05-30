@@ -8,18 +8,17 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <talloc/helpers.h>
+#include <talloc/tree.h>
 #include <libbtr/utils/itoa.h>
 
 bool test_number ( void * ctx, size_t number, char * answer )
 {
     char * result = bt_size_t_to_str ( ctx, number );
-    if (
-        ! (
-            result != NULL &&
-            !strcmp ( result, answer )
-        )
-    ) {
+    if ( result == NULL ) {
+        return false;
+    }
+    if ( strcmp ( result, answer ) != 0 ) {
+        talloc_free ( result );
         return false;
     }
     talloc_free ( result );
@@ -29,11 +28,9 @@ bool test_number ( void * ctx, size_t number, char * answer )
 bool test ( void * ctx )
 {
     if (
-        ! (
-            test_number ( ctx, 0, "0" )           &&
-            test_number ( ctx, 123456, "123456" ) &&
-            test_number ( ctx, 987654, "987654" )
-        )
+        !test_number ( ctx, 0, "0" )           ||
+        !test_number ( ctx, 123456, "123456" ) ||
+        !test_number ( ctx, 987654, "987654" )
     ) {
         return false;
     }

@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include <talloc/helpers.h>
+#include <talloc/tree.h>
 #include <libbtr/utils/list.h>
 
 static bt_list * list;
@@ -24,17 +24,15 @@ bool test_init ( void * ctx )
 bool test_append ()
 {
     if (
-        ! (
-            !bt_list_append ( list, &a ) &&
-            !bt_list_append ( list, &a ) &&
-            !bt_list_append ( list, &b ) &&
-            !bt_list_append ( list, &a ) &&
-            !bt_list_append ( list, &a ) &&
-            !bt_list_append ( list, &b ) &&
-            !bt_list_append ( list, &a ) &&
-            !bt_list_append ( list, &b ) &&
-            !bt_list_append ( list, &b )
-        )
+        bt_list_append ( list, &a ) != 0 ||
+        bt_list_append ( list, &a ) != 0 ||
+        bt_list_append ( list, &b ) != 0 ||
+        bt_list_append ( list, &a ) != 0 ||
+        bt_list_append ( list, &a ) != 0 ||
+        bt_list_append ( list, &b ) != 0 ||
+        bt_list_append ( list, &a ) != 0 ||
+        bt_list_append ( list, &b ) != 0 ||
+        bt_list_append ( list, &b ) != 0
     ) {
         return false;
     }
@@ -45,20 +43,18 @@ bool test_data ()
 {
     bt_list_item * item = list->last_item;
     if (
-        ! (
-            bt_list_get_length ( list ) == 9 &&
-            item != NULL &&
+        bt_list_get_length ( list ) != 9 ||
+        item == NULL ||
 
-            item->data == &b && ( item = item->prev ) != NULL &&
-            item->data == &b && ( item = item->prev ) != NULL &&
-            item->data == &a && ( item = item->prev ) != NULL &&
-            item->data == &b && ( item = item->prev ) != NULL &&
-            item->data == &a && ( item = item->prev ) != NULL &&
-            item->data == &a && ( item = item->prev ) != NULL &&
-            item->data == &b && ( item = item->prev ) != NULL &&
-            item->data == &a && ( item = item->prev ) != NULL &&
-            item->data == &a
-        )
+        item->data != &b || ( item = item->prev ) == NULL ||
+        item->data != &b || ( item = item->prev ) == NULL ||
+        item->data != &a || ( item = item->prev ) == NULL ||
+        item->data != &b || ( item = item->prev ) == NULL ||
+        item->data != &a || ( item = item->prev ) == NULL ||
+        item->data != &a || ( item = item->prev ) == NULL ||
+        item->data != &b || ( item = item->prev ) == NULL ||
+        item->data != &a || ( item = item->prev ) == NULL ||
+        item->data != &a
     ) {
         return false;
     }

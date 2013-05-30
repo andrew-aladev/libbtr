@@ -67,7 +67,7 @@ uint8_t bt_magnet_keylist_indexed ( bt_magnet_keylist * keylist, char * key, siz
     key++;
     key_size--;
 
-    if ( keylist->mode ) {
+    if ( keylist->mode != 0 ) {
         if ( keylist->mode == BT_MAGNET_KEYLIST_STRICT ) {
             return 2;
         }
@@ -76,11 +76,13 @@ uint8_t bt_magnet_keylist_indexed ( bt_magnet_keylist * keylist, char * key, siz
             index++;
         }
         char * index_str = bt_size_t_to_str ( keylist, index );
-        if ( strlen ( index_str ) != key_size ) {
-            talloc_free ( index_str );
+        if ( index_str == NULL ) {
             return 3;
         }
-        if ( strncmp ( key, index_str, key_size ) ) {
+        if (
+            strlen ( index_str ) != key_size ||
+            strncmp ( key, index_str, key_size ) != 0
+        ) {
             talloc_free ( index_str );
             return 4;
         }
@@ -118,16 +120,16 @@ inline
 uint8_t bt_magnet_keylist_append ( bt_magnet_keylist * keylist, char * key, size_t key_size, char * value )
 {
     if ( key_size ) {
-        if ( bt_magnet_keylist_indexed ( keylist, key, key_size ) ) {
+        if ( bt_magnet_keylist_indexed ( keylist, key, key_size ) != 0 ) {
             return 1;
         }
     } else {
-        if ( bt_magnet_keylist_strict ( keylist ) ) {
+        if ( bt_magnet_keylist_strict ( keylist ) != 0 ) {
             return 2;
         }
     }
 
-    if ( bt_list_append ( keylist->list, value ) ) {
+    if ( bt_list_append ( keylist->list, value ) != 0 ) {
         return 3;
     }
     return 0;

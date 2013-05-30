@@ -12,7 +12,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#include <talloc/helpers.h>
+#include <talloc/tree.h>
 
 typedef struct bt_dynarr_t {
     size_t length;
@@ -24,7 +24,7 @@ typedef struct bt_dynarr_t {
 inline
 bt_dynarr * bt_dynarr_new ( void * ctx, size_t capacity )
 {
-    if ( !capacity ) {
+    if ( capacity == 0 ) {
         return NULL;
     }
 
@@ -34,11 +34,12 @@ bt_dynarr * bt_dynarr_new ( void * ctx, size_t capacity )
     }
 
     arr->start_capacity = arr->current_capacity = capacity;
-    arr->data = talloc ( arr, arr->current_capacity * sizeof ( uintptr_t ) );
-    if ( arr->data == NULL ) {
+    void ** data = talloc ( arr, arr->current_capacity * sizeof ( uintptr_t ) );
+    if ( data == NULL ) {
         talloc_free ( arr );
         return NULL;
     }
+    arr->data = data;
     arr->length = 0;
 
     return arr;
@@ -62,8 +63,10 @@ uint8_t bt_dynarr_append ( bt_dynarr * arr, void * data )
 {
     size_t index = arr->length;
     arr->length++;
-    if ( arr->length > arr->current_capacity && bt_dynarr_grow ( arr ) ) {
-        return 1;
+    if ( arr->length > arr->current_capacity ) {
+        if ( bt_dynarr_grow ( arr ) != 0 ) {
+            return 1;
+        }
     }
     arr->data[index] = data;
     return 0;
@@ -88,3 +91,4 @@ size_t bt_dynarr_get_length ( bt_dynarr * arr )
 }
 
 #endif
+

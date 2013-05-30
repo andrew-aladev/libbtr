@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <talloc/helpers.h>
+#include <talloc/tree.h>
 #include <libbtr/btih.h>
 
 bool decode32_null ( void * ctx, char * str )
@@ -37,26 +37,28 @@ bool test_null ( void * ctx )
         return false;
     }
     empty_hash->binary = talloc_new ( empty_hash );
+    if ( empty_hash->binary == NULL ) {
+        return false;
+    }
     empty_hash->length = 0;
 
     if (
-        ! (
-            decode32_null ( ctx, "" )          &&
-            decode32_null ( ctx, "=" )         &&
-            decode32_null ( ctx, "========" )  &&
-            decode32_null ( ctx, "=a======" )  &&
-            decode32_null ( ctx, "a========" ) &&
+        !decode32_null ( ctx, "" )          ||
+        !decode32_null ( ctx, "=" )         ||
+        !decode32_null ( ctx, "========" )  ||
+        !decode32_null ( ctx, "=a======" )  ||
+        !decode32_null ( ctx, "a========" ) ||
 
-            decode64_null ( ctx, "" )      &&
-            decode64_null ( ctx, "=" )     &&
-            decode64_null ( ctx, "====" )  &&
-            decode64_null ( ctx, "=a==" )  &&
-            decode64_null ( ctx, "a====" ) &&
+        !decode64_null ( ctx, "" )      ||
+        !decode64_null ( ctx, "=" )     ||
+        !decode64_null ( ctx, "====" )  ||
+        !decode64_null ( ctx, "=a==" )  ||
+        !decode64_null ( ctx, "a====" ) ||
 
-            encode32_null ( ctx, empty_hash ) &&
-            encode64_null ( ctx, empty_hash )
-        )
+        !encode32_null ( ctx, empty_hash ) ||
+        !encode64_null ( ctx, empty_hash )
     ) {
+        talloc_free ( empty_hash );
         return false;
     }
     talloc_free ( empty_hash );
@@ -66,12 +68,11 @@ bool test_null ( void * ctx )
 bool decode_valid ( bt_hash * result, uint8_t hash[], size_t length )
 {
     if (
-        ! (
-            result != NULL &&
-            result->length == length &&
-            !memcmp ( result->binary, hash, length )
-        )
+        result == NULL ||
+        result->length != length ||
+        memcmp ( result->binary, hash, length ) != 0
     ) {
+        talloc_free ( result );
         return false;
     }
     talloc_free ( result );
@@ -80,12 +81,11 @@ bool decode_valid ( bt_hash * result, uint8_t hash[], size_t length )
 bool encode_valid ( char * result, size_t result_length, char * answer )
 {
     if (
-        ! (
-            result != NULL &&
-            result_length == strlen ( answer ) &&
-            !strncmp ( result, answer, result_length )
-        )
+        result == NULL ||
+        result_length != strlen ( answer ) ||
+        strncmp ( result, answer, result_length ) != 0
     ) {
+        talloc_free ( result );
         return false;
     }
     talloc_free ( result );
@@ -148,21 +148,19 @@ bool test_valid ( void * ctx )
     uint8_t hash_4[] = { 0xEF, 0x4D, 0x7C, 0x6F, 0xBE, 0x74, 0x77, 0xB6, 0xDE, 0xE7, 0x96, 0xDA, 0xE9, 0xBD, 0x39, 0x69, 0xC6, 0xB8, 0xDD, 0xD7, 0xDE, 0x6B, 0x5E, 0x1C, 0xF3, 0x9E, 0x74, 0xDB, 0x6D, 0xB9};
     uint8_t hash_5[] = { 0x2e, 0x18, 0xd8, 0x25, 0xcf, 0x52, 0x5e, 0xd9, 0xbe, 0x0e, 0x0e, 0x68, 0xe9, 0xf6, 0xec, 0xdd, 0x50, 0x4d, 0xfb, 0x10 };
     if (
-        ! (
-            decode32_valid ( ctx, "MFRGG===", hash_1, sizeof ( hash_1 ) ) &&
-            decode32_valid ( ctx, "BGQHKHR56P6J32HGQTCCHFIA7UTHWEF6", hash_2, sizeof ( hash_2 ) ) &&
+        !decode32_valid ( ctx, "MFRGG===", hash_1, sizeof ( hash_1 ) ) ||
+        !decode32_valid ( ctx, "BGQHKHR56P6J32HGQTCCHFIA7UTHWEF6", hash_2, sizeof ( hash_2 ) ) ||
 
-            decode64_valid ( ctx, "YWJjZA==", hash_3, sizeof ( hash_3 ) ) &&
-            decode64_valid ( ctx, "7018b750d7be55ba6b05aca43dfea14c85502225", hash_4, sizeof ( hash_4 ) ) &&
-            decode64_valid ( ctx, "LhjYJc9SXtm+Dg5o6fbs3VBN+xA=", hash_5, sizeof ( hash_5 ) ) &&
+        !decode64_valid ( ctx, "YWJjZA==", hash_3, sizeof ( hash_3 ) ) ||
+        !decode64_valid ( ctx, "7018b750d7be55ba6b05aca43dfea14c85502225", hash_4, sizeof ( hash_4 ) ) ||
+        !decode64_valid ( ctx, "LhjYJc9SXtm+Dg5o6fbs3VBN+xA=", hash_5, sizeof ( hash_5 ) ) ||
 
-            encode32_valid ( ctx, hash_1, sizeof ( hash_1 ), "mfrgg===" ) &&
-            encode32_valid ( ctx, hash_2, sizeof ( hash_2 ), "bgqhkhr56p6j32hgqtcchfia7uthwef6" ) &&
+        !encode32_valid ( ctx, hash_1, sizeof ( hash_1 ), "mfrgg===" ) ||
+        !encode32_valid ( ctx, hash_2, sizeof ( hash_2 ), "bgqhkhr56p6j32hgqtcchfia7uthwef6" ) ||
 
-            encode64_valid ( ctx, hash_3, sizeof ( hash_3 ), "YWJjZA==" ) &&
-            encode64_valid ( ctx, hash_4, sizeof ( hash_4 ), "7018b750d7be55ba6b05aca43dfea14c85502225" ) &&
-            encode64_valid ( ctx, hash_5, sizeof ( hash_5 ), "LhjYJc9SXtm+Dg5o6fbs3VBN+xA=" )
-        )
+        !encode64_valid ( ctx, hash_3, sizeof ( hash_3 ), "YWJjZA==" ) ||
+        !encode64_valid ( ctx, hash_4, sizeof ( hash_4 ), "7018b750d7be55ba6b05aca43dfea14c85502225" ) ||
+        !encode64_valid ( ctx, hash_5, sizeof ( hash_5 ), "LhjYJc9SXtm+Dg5o6fbs3VBN+xA=" )
     ) {
         return false;
     }

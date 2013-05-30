@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include <talloc/helpers.h>
+#include <talloc/tree.h>
 #include <libbtr/utils/dynarr.h>
 
 static bt_dynarr * arr;
@@ -28,17 +28,15 @@ bool test_init ( void * ctx )
 bool test_append ()
 {
     if (
-        ! (
-            !bt_dynarr_append ( arr, &a ) &&
-            !bt_dynarr_append ( arr, &a ) &&
-            !bt_dynarr_append ( arr, &b ) &&
-            !bt_dynarr_append ( arr, &a ) &&
-            !bt_dynarr_append ( arr, &a ) &&
-            !bt_dynarr_append ( arr, &b ) &&
-            !bt_dynarr_append ( arr, &a ) &&
-            !bt_dynarr_append ( arr, &b ) &&
-            !bt_dynarr_append ( arr, &b )
-        )
+        bt_dynarr_append ( arr, &a ) != 0 ||
+        bt_dynarr_append ( arr, &a ) != 0 ||
+        bt_dynarr_append ( arr, &b ) != 0 ||
+        bt_dynarr_append ( arr, &a ) != 0 ||
+        bt_dynarr_append ( arr, &a ) != 0 ||
+        bt_dynarr_append ( arr, &b ) != 0 ||
+        bt_dynarr_append ( arr, &a ) != 0 ||
+        bt_dynarr_append ( arr, &b ) != 0 ||
+        bt_dynarr_append ( arr, &b ) != 0
     ) {
         return false;
     }
@@ -51,18 +49,16 @@ bool test_data ()
     bt_dynarr_set ( arr, 2, &a );
 
     if (
-        ! (
-            bt_dynarr_get_length ( arr ) == 9 &&
-            bt_dynarr_get ( arr, 0 ) == &a &&
-            bt_dynarr_get ( arr, 1 ) == &a &&
-            bt_dynarr_get ( arr, 2 ) == &a &&
-            bt_dynarr_get ( arr, 3 ) == &b &&
-            bt_dynarr_get ( arr, 4 ) == &a &&
-            bt_dynarr_get ( arr, 5 ) == &b &&
-            bt_dynarr_get ( arr, 6 ) == &a &&
-            bt_dynarr_get ( arr, 7 ) == &b &&
-            bt_dynarr_get ( arr, 8 ) == &b
-        )
+        bt_dynarr_get_length ( arr ) != 9 ||
+        bt_dynarr_get ( arr, 0 ) != &a ||
+        bt_dynarr_get ( arr, 1 ) != &a ||
+        bt_dynarr_get ( arr, 2 ) != &a ||
+        bt_dynarr_get ( arr, 3 ) != &b ||
+        bt_dynarr_get ( arr, 4 ) != &a ||
+        bt_dynarr_get ( arr, 5 ) != &b ||
+        bt_dynarr_get ( arr, 6 ) != &a ||
+        bt_dynarr_get ( arr, 7 ) != &b ||
+        bt_dynarr_get ( arr, 8 ) != &b
     ) {
         return false;
     }

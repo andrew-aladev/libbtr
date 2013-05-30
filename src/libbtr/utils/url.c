@@ -16,7 +16,7 @@ char * bt_unescape ( void * ctx, const char * url, size_t length )
     if ( url == NULL ) {
         return NULL;
     }
-    if ( !length ) {
+    if ( length == 0 ) {
         return NULL;
     }
 
@@ -26,12 +26,12 @@ char * bt_unescape ( void * ctx, const char * url, size_t length )
     }
 
     const char * walk_url = url;
-    char * walk_buffer = buffer;
-    const char * end_url     = url + length;
+    char * walk_buffer    = buffer;
+    const char * end_url  = url + length;
     char ch;
 
     while ( walk_url != end_url ) {
-        ch = *walk_url;
+        ch = * walk_url;
         if ( ch == '+' ) {
             ch = ' ';
         } else if ( ch == '%' ) {
@@ -48,7 +48,7 @@ char * bt_unescape ( void * ctx, const char * url, size_t length )
                 return NULL;
             }
             ch = ( char ) strtol ( hex, NULL, 16 );
-            if ( !ch ) {
+            if ( ch == 0 ) {
                 talloc_free ( buffer );
                 return NULL;
             }

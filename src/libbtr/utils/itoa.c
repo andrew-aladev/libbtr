@@ -7,13 +7,13 @@
 
 #include <math.h>
 
-#include <talloc/helpers.h>
+#include <talloc/tree.h>
 
 char * bt_size_t_to_str ( void * ctx, size_t number )
 {
     char * result;
 
-    if ( !number ) {
+    if ( number == 0 ) {
         result = talloc ( ctx, sizeof ( char ) * 2 );
         if ( result == NULL ) {
             return NULL;
@@ -37,7 +37,7 @@ char * bt_size_t_to_str ( void * ctx, size_t number )
         walk--;
         digit  = number % 10;
         number /= 10;
-        * walk  = '0' + digit;
+        * walk = '0' + digit;
     }
 
     return result;

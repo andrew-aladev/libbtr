@@ -8,18 +8,16 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <talloc/helpers.h>
+#include <talloc/tree.h>
 #include <libbtr/utils/url.h>
 
 bool test_null ( void * ctx )
 {
     if (
-        ! (
-            bt_unescape ( ctx, NULL, 0 ) == NULL &&
-            bt_unescape ( ctx, "", 0 )   == NULL &&
-            bt_unescape ( ctx, "%", strlen ( "%" ) )   == NULL &&
-            bt_unescape ( ctx, "%1", strlen ( "%1" ) ) == NULL
-        )
+        bt_unescape ( ctx, NULL, 0 ) != NULL ||
+        bt_unescape ( ctx, "", 0 )   != NULL ||
+        bt_unescape ( ctx, "%", strlen ( "%" ) )   != NULL ||
+        bt_unescape ( ctx, "%1", strlen ( "%1" ) ) != NULL
     ) {
         return false;
     }
@@ -29,12 +27,11 @@ bool test_null ( void * ctx )
 bool test_url ( void * ctx, char * encoded_url, char * decoded_url )
 {
     char * url = bt_unescape ( ctx, encoded_url, strlen ( encoded_url ) );
-    if (
-        ! (
-            url != NULL &&
-            !strcmp ( url, decoded_url )
-        )
-    ) {
+    if ( url == NULL ) {
+        return false;
+    }
+    if ( strcmp ( url, decoded_url ) != 0 ) {
+        talloc_free ( url );
         return false;
     }
     talloc_free ( url );
@@ -44,14 +41,8 @@ bool test_url ( void * ctx, char * encoded_url, char * decoded_url )
 bool test_urls ( void * ctx )
 {
     if (
-        ! (
-            test_url ( ctx,
-                       "udp%3A%2F%2Ftracker.openbittorrent.com%3A80",
-                       "udp://tracker.openbittorrent.com:80" ) &&
-            test_url ( ctx,
-                       "music%3A%2F%2Ftsoi.com%2Fsadness%3A8183",
-                       "music://tsoi.com/sadness:8183" )
-        )
+        !test_url ( ctx, "udp%3A%2F%2Ftracker.openbittorrent.com%3A80", "udp://tracker.openbittorrent.com:80" ) ||
+        !test_url ( ctx, "music%3A%2F%2Ftsoi.com%2Fsadness%3A8183", "music://tsoi.com/sadness:8183" )
     ) {
         return false;
     }
@@ -61,14 +52,8 @@ bool test_urls ( void * ctx )
 bool test_components ( void * ctx )
 {
     if (
-        ! (
-            test_url ( ctx,
-                       "Gentoo+Linux+20121221+LiveDVD+-+End+Of+World+Edition+%28amd64%29",
-                       "Gentoo Linux 20121221 LiveDVD - End Of World Edition (amd64)" ) &&
-            test_url ( ctx,
-                       "Butusov%20%3A%20breath",
-                       "Butusov : breath" )
-        )
+        !test_url ( ctx, "Gentoo+Linux+20121221+LiveDVD+-+End+Of+World+Edition+%28amd64%29", "Gentoo Linux 20121221 LiveDVD - End Of World Edition (amd64)" ) ||
+        !test_url ( ctx, "Butusov%20%3A%20breath", "Butusov : breath" )
     ) {
         return false;
     }
@@ -85,15 +70,15 @@ int main()
 
     if ( !test_null ( ctx ) ) {
         talloc_free ( ctx );
-        return 1;
+        return 2;
     }
     if ( !test_urls ( ctx ) ) {
         talloc_free ( ctx );
-        return 2;
+        return 3;
     }
     if ( !test_components ( ctx ) ) {
         talloc_free ( ctx );
-        return 3;
+        return 4;
     }
 
     talloc_free ( ctx );
