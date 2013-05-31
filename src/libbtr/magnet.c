@@ -10,7 +10,7 @@
 #include "magnet/keylist.h"
 #include "utils/url.h"
 
-#include <talloc/helpers.h>
+#include <talloc2/helpers.h>
 
 static inline
 uint8_t set_hash ( bt_magnet_info * info, char * value, size_t value_size )

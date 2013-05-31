@@ -10,8 +10,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#include <talloc/tree.h>
-#include <talloc/ext/destructor.h>
+#include <talloc2/tree.h>
+#include <talloc2/ext/destructor.h>
 
 typedef struct bt_list_item_t {
     struct bt_list_item_t * prev;

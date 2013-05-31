@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include <talloc/tree.h>
+#include <talloc2/tree.h>
 #include <libbtr/utils/list.h>
 
 static bt_list * list;

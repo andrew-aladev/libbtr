@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <talloc/tree.h>
+#include <talloc2/tree.h>
 #include <libbtr/magnet.h>
 
 bool test_null ( void * ctx )

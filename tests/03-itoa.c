@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <talloc/tree.h>
+#include <talloc2/tree.h>
 #include <libbtr/utils/itoa.h>
 
 bool test_number ( void * ctx, size_t number, char * answer )

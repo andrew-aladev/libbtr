@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <talloc/tree.h>
+#include <talloc2/tree.h>
 #include <libbtr/btih.h>
 
 bool decode32_null ( void * ctx, char * str )

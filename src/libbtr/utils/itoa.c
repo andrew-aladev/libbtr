@@ -7,7 +7,7 @@
 
 #include <math.h>
 
-#include <talloc/tree.h>
+#include <talloc2/tree.h>
 
 char * bt_size_t_to_str ( void * ctx, size_t number )
 {

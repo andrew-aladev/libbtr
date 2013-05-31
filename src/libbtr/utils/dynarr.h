@@ -12,7 +12,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#include <talloc/tree.h>
+#include <talloc2/tree.h>
 
 typedef struct bt_dynarr_t {
     size_t length;
