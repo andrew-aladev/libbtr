@@ -8,10 +8,15 @@ if (NOT DEFINED LIBBTR_STATIC)
     set (LIBBTR_STATIC true)
 endif ()
 
+if (NOT DEFINED LIBBTR_TARGET)
+    set (LIBBTR_TARGET ${LIBBTR_NAME})
+endif ()
+
 set (CMAKE_BUILD_TYPE DEBUG)
 
 enable_testing ()
 
+set (TALLOC_TARGET libbtr_talloc2)
 add_subdirectory (talloc2)
 include_directories ("talloc2/src/")
 
