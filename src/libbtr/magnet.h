@@ -7,9 +7,9 @@
 #define LIBBTR_MAGNET_H
 
 #include <stdint.h>
+#include <talloc2/utils/stack.h>
 
 #include "btih.h"
-#include "utils/list.h"
 
 // See specification http://www.bittorrent.org/beps/bep_0009.html
 //   additions https://trac.transmissionbt.com/ticket/5134
@@ -22,10 +22,10 @@
 #define BT_HASH_BASE64_INFO 30
 
 typedef struct bt_magnet_info_t {
-    bt_hash * hash;
-    char    * display_name;
-    bt_list * trackers;
-    bt_list * webseeds;
+    bt_hash      * hash;
+    char         * display_name;
+    talloc_stack * trackers;
+    talloc_stack * webseeds;
 } bt_magnet_info;
 
 bt_magnet_info * bt_magnet_parse ( void * ctx, char * uri );

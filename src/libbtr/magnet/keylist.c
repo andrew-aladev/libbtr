@@ -6,7 +6,7 @@
 #include "keylist.h"
 
 extern inline
-bt_magnet_keylist * bt_magnet_keylist_new ( bt_list * list );
+bt_magnet_keylist * bt_magnet_keylist_new ( talloc_stack * stack );
 
 extern inline
 uint8_t bt_magnet_keylist_indexed ( bt_magnet_keylist * keylist, char * key, size_t key_size );

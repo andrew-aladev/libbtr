@@ -57,7 +57,7 @@ uint8_t set_key_value ( bt_magnet_info * info, bt_magnet_keylist * trackers, cha
             if ( link == NULL ) {
                 return 3;
             }
-            if ( bt_list_append ( info->webseeds, link ) ) {
+            if ( talloc_stack_push ( info->webseeds, link ) ) {
                 return 4;
             }
             return 0;
@@ -98,7 +98,7 @@ bt_magnet_info * bt_magnet_parse ( void * ctx, char * uri )
     info->hash = NULL;
     info->display_name = NULL;
 
-    info->trackers = bt_list_new ( info );
+    info->trackers = talloc_stack_new ( info );
     if ( info->trackers == NULL ) {
         talloc_free ( info );
         return NULL;
@@ -109,7 +109,7 @@ bt_magnet_info * bt_magnet_parse ( void * ctx, char * uri )
         return NULL;
     }
 
-    info->webseeds = bt_list_new ( info );
+    info->webseeds = talloc_stack_new ( info );
     if ( info->webseeds == NULL ) {
         talloc_free ( info );
         return NULL;

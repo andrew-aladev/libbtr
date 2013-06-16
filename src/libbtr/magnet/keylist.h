@@ -6,11 +6,11 @@
 #ifndef LIBBTR_MAGNET_KEYLIST_H
 #define LIBBTR_MAGNET_KEYLIST_H
 
-#include "../utils/list.h"
 #include "../utils/itoa.h"
 
 #include <stdint.h>
 #include <string.h>
+#include <talloc2/utils/stack.h>
 
 /*
 
@@ -42,18 +42,18 @@ enum {
 };
 
 typedef struct bt_magnet_keylist_t {
-    bt_list * list;
+    talloc_stack * stack;
     uint8_t mode;
 } bt_magnet_keylist;
 
 inline
-bt_magnet_keylist * bt_magnet_keylist_new ( bt_list * list )
+bt_magnet_keylist * bt_magnet_keylist_new ( talloc_stack * stack )
 {
-    bt_magnet_keylist * keylist = talloc ( list, sizeof ( bt_magnet_keylist ) );
+    bt_magnet_keylist * keylist = talloc ( stack, sizeof ( bt_magnet_keylist ) );
     if ( keylist == NULL ) {
         return NULL;
     }
-    keylist->list = list;
+    keylist->stack = stack;
     keylist->mode = 0;
     return keylist;
 }
@@ -71,7 +71,7 @@ uint8_t bt_magnet_keylist_indexed ( bt_magnet_keylist * keylist, char * key, siz
         if ( keylist->mode == BT_MAGNET_KEYLIST_STRICT ) {
             return 2;
         }
-        size_t index = bt_list_get_length ( keylist->list );
+        size_t index = talloc_stack_get_length ( keylist->stack );
         if ( keylist->mode == BT_MAGNET_KEYLIST_ONE_INDEXED ) {
             index++;
         }
@@ -129,7 +129,7 @@ uint8_t bt_magnet_keylist_append ( bt_magnet_keylist * keylist, char * key, size
         }
     }
 
-    if ( bt_list_append ( keylist->list, value ) != 0 ) {
+    if ( talloc_stack_push ( keylist->stack, value ) != 0 ) {
         return 3;
     }
     return 0;

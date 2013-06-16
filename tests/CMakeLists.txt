@@ -1,14 +1,9 @@
-set (LIST         02-list.c)
 set (ITOA         03-itoa.c)
 set (URL_UNESCAPE 04-url-unescape.c)
 set (BTIH         05-btih.c)
 set (MAGNET       06-magnet.c)
 
 if (LIBBTR_SHARED MATCHES true)
-    add_executable (${LIBBTR_TARGET}-list ${LIST})
-    target_link_libraries (${LIBBTR_TARGET}-list ${LIBBTR_TARGET})
-    add_test (${LIBBTR_TARGET}-list ${LIBBTR_TARGET}-list)
-
     add_executable (${LIBBTR_TARGET}-itoa ${ITOA})
     target_link_libraries (${LIBBTR_TARGET}-itoa ${LIBBTR_TARGET})
     add_test (${LIBBTR_TARGET}-itoa ${LIBBTR_TARGET}-itoa)
@@ -27,10 +22,6 @@ if (LIBBTR_SHARED MATCHES true)
 endif ()
 
 if (LIBBTR_STATIC MATCHES true)
-    add_executable (${LIBBTR_TARGET}-static-list ${LIST})
-    target_link_libraries (${LIBBTR_TARGET}-static-list ${LIBBTR_TARGET}_static)
-    add_test (${LIBBTR_TARGET}-static-list ${LIBBTR_TARGET}-static-list)
-
     add_executable (${LIBBTR_TARGET}-static-itoa ${ITOA})
     target_link_libraries (${LIBBTR_TARGET}-static-itoa ${LIBBTR_TARGET}_static)
     add_test (${LIBBTR_TARGET}-static-itoa ${LIBBTR_TARGET}-static-itoa)
