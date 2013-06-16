@@ -8,10 +8,13 @@ foreach (bool ${BOOLEANS})
     endif ()
 endforeach()
 
+if (NOT DEFINED LIBBTR_TARGET)
+    set (LIBBTR_TARGET ${LIBBTR_NAME})
+endif ()
+
 set (CMAKE_BUILD_TYPE DEBUG)
 
-enable_testing ()
-
+set (TALLOC_TARGET libbtr_talloc2)
 add_subdirectory (talloc2)
 include_directories ("talloc2/src/")
 
@@ -21,4 +24,5 @@ add_subdirectory (src)
 
 include_directories ("src/")
 
+enable_testing ()
 add_subdirectory (tests)
