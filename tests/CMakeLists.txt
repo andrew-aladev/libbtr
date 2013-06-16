@@ -1,4 +1,3 @@
-set (DYNARR       01-dynarr.c)
 set (LIST         02-list.c)
 set (ITOA         03-itoa.c)
 set (URL_UNESCAPE 04-url-unescape.c)
@@ -6,10 +5,6 @@ set (BTIH         05-btih.c)
 set (MAGNET       06-magnet.c)
 
 if (LIBBTR_SHARED MATCHES true)
-    add_executable (01-dynarr ${DYNARR})
-    target_link_libraries (01-dynarr ${PROJECT_NAME})
-    add_test (${PROJECT_NAME}-dynarr 01-dynarr)
-
     add_executable (02-list ${LIST})
     target_link_libraries (02-list ${PROJECT_NAME})
     add_test (${PROJECT_NAME}-list 02-list)
@@ -32,10 +27,6 @@ if (LIBBTR_SHARED MATCHES true)
 endif ()
 
 if (LIBBTR_STATIC MATCHES true)
-    add_executable (01-static-dynarr ${DYNARR})
-    target_link_libraries (01-static-dynarr ${PROJECT_NAME}_static)
-    add_test (${PROJECT_NAME}-static-dynarr 01-static-dynarr)
-
     add_executable (02-static-list ${LIST})
     target_link_libraries (02-static-list ${PROJECT_NAME}_static)
     add_test (${PROJECT_NAME}-static-list 02-static-list)

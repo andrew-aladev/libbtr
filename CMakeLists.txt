@@ -1,12 +1,12 @@
 cmake_minimum_required (VERSION 2.8)
 project (libbtr)
 
-if (NOT DEFINED LIBBTR_SHARED)
-    set (LIBBTR_SHARED true)
-endif ()
-if (NOT DEFINED LIBBTR_STATIC)
-    set (LIBBTR_STATIC true)
-endif ()
+set (BOOLEANS LIBBTR_SHARED LIBBTR_STATIC)
+foreach (bool ${BOOLEANS})
+    if (NOT DEFINED ${bool})
+        set (${bool} true)
+    endif ()
+endforeach()
 
 set (CMAKE_BUILD_TYPE DEBUG)
 
