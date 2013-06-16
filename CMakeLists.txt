@@ -9,7 +9,7 @@ foreach (bool ${BOOLEANS})
 endforeach()
 
 if (NOT DEFINED LIBBTR_TARGET)
-    set (LIBBTR_TARGET ${LIBBTR_NAME})
+    set (LIBBTR_TARGET ${PROJECT_NAME})
 endif ()
 
 set (CMAKE_BUILD_TYPE DEBUG)
