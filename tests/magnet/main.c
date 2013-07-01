@@ -214,6 +214,3 @@ int main()
     talloc_free ( ctx );
     return 0;
 }
-
-
-
