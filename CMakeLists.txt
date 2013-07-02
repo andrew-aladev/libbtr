@@ -19,7 +19,11 @@ add_subdirectory (talloc2)
 include_directories ("talloc2/src/")
 
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Winline -std=gnu99")
-set (CMAKE_C_FLAGS_DEBUG "-O0 -g")
+set (CMAKE_C_FLAGS_DEBUG    "-O0 -g")
+
+set (CMAKE_C_FLAGS_RELEASE  "-O2 -pipe -march=native -flto")
+set (CMAKE_LD_FLAGS_RELEASE "-flto")
+
 add_subdirectory (src)
 
 include_directories ("src/")

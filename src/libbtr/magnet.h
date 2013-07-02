@@ -7,7 +7,7 @@
 #define LIBBTR_MAGNET_H
 
 #include <stdint.h>
-#include <talloc2/utils/stack.h>
+#include <talloc2/utils/list.h>
 
 #include "btih.h"
 
@@ -24,8 +24,8 @@
 typedef struct bt_magnet_info_t {
     bt_hash      * hash;
     char         * display_name;
-    talloc_stack * trackers;
-    talloc_stack * webseeds;
+    talloc_list  * trackers;
+    talloc_list  * webseeds;
 } bt_magnet_info;
 
 bt_magnet_info * bt_magnet_parse ( void * ctx, char * uri );

@@ -95,12 +95,12 @@ bool test_magnet_valid (
 
     if (
         info->trackers == NULL ||
-        talloc_stack_get_length ( info->trackers ) != trackers_length
+        talloc_list_get_length ( info->trackers ) != trackers_length
     ) {
         talloc_free ( info );
         return false;
     }
-    talloc_stack_item * item = info->trackers->last_item;
+    talloc_list_item * item = info->trackers->last_item;
     size_t i = trackers_length - 1;
     while ( item != NULL ) {
         if ( strcmp ( trackers[i], item->data ) != 0 ) {
@@ -113,7 +113,7 @@ bool test_magnet_valid (
 
     if (
         info->webseeds == NULL ||
-        talloc_stack_get_length ( info->webseeds ) != webseeds_length
+        talloc_list_get_length ( info->webseeds ) != webseeds_length
     ) {
         talloc_free ( info );
         return false;
@@ -214,6 +214,3 @@ int main()
     talloc_free ( ctx );
     return 0;
 }
-
-
-
