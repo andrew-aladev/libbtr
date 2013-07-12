@@ -1,5 +1,5 @@
-set (INCLUDES magnet.h btih.h)
-set (SOURCES  magnet.c btih.c)
+set (INCLUDES magnet.h btih.h addresses.h epoll.h)
+set (SOURCES  magnet.c btih.c addresses.c)
 
 add_subdirectory (utils)
 add_subdirectory (magnet)
