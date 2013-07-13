@@ -37,12 +37,12 @@ bt_addresses * bt_addresses_new ( void * ctx )
     }
     addresses->type = BT_EPOLL_EVENT_ADDRESSES;
 
-    talloc_list * addrs = talloc_list_new ( addresses );
-    if ( addrs == NULL ) {
+    talloc_dynarr * arr = talloc_dynarr_new ( addresses, 1 );
+    if ( arr == NULL ) {
         talloc_free ( addresses );
         return NULL;
     }
-    addresses->addrs = addrs;
+    addresses->arr = arr;
 
     int * socket_fd_ptr = talloc ( addresses, sizeof ( int ) );
     if ( socket_fd_ptr == NULL ) {
@@ -92,7 +92,7 @@ bt_addresses * bt_addresses_new ( void * ctx )
     return addresses;
 }
 
-uint8_t bt_addresses_init_list ( bt_addresses * addresses )
+uint8_t bt_addresses_init ( bt_addresses * addresses )
 {
     struct sockaddr_nl kernel_address;
     kernel_address.nl_family = AF_NETLINK;
@@ -144,22 +144,72 @@ uint8_t bt_addresses_add_to_epoll ( bt_addresses * addresses, int epoll_fd )
 }
 
 static inline
-uint8_t parse_address ( struct nlmsghdr * message_data, in_addr_t * address )
+bt_address * parse_address ( void * ctx, struct ifaddrmsg * message, size_t length )
 {
-    struct rtattr * attribute;
-    struct ifaddrmsg * message = NLMSG_DATA ( message_data );
-    size_t length              = IFLA_PAYLOAD ( message_data );
-    uint16_t type;
+    bt_address * address = talloc ( ctx, sizeof ( bt_address ) );
+    if ( address == NULL ) {
+        return NULL;
+    }
 
+    struct rtattr * attribute;
+    size_t          payload;
+    char *          label;
+
+    bool found_label   = false;
+    bool found_address = false;
     for ( attribute = IFLA_RTA ( message ) ; RTA_OK ( attribute, length ); attribute = RTA_NEXT ( attribute, length ) ) {
-        type = attribute->rta_type;
-        if ( type == IFA_ADDRESS || type == IFA_LOCAL ) {
-            memcpy ( address, RTA_DATA ( attribute ), RTA_PAYLOAD ( attribute ) );
-            return 0;
+        switch ( attribute->rta_type ) {
+        case IFA_ADDRESS:
+        case IFA_LOCAL:
+            memcpy ( &address->addr, RTA_DATA ( attribute ), RTA_PAYLOAD ( attribute ) );
+            found_address = true;
+            break;
+        case IFA_LABEL:
+            payload = RTA_PAYLOAD ( attribute );
+            label = talloc ( address, sizeof ( char ) * payload );
+            if ( label == NULL ) {
+                talloc_free ( address );
+                return NULL;
+            }
+            memcpy ( label, RTA_DATA ( attribute ), payload );
+            address->label = label;
+            found_label    = true;
+            break;
         }
     }
 
-    return 1;
+    if ( found_label && found_address ) {
+        return address;
+    }
+    talloc_free ( address );
+    return NULL;
+}
+
+static inline
+uint8_t process_data ( bt_addresses * addresses, struct nlmsghdr * data, bool add )
+{
+    struct ifaddrmsg * message = NLMSG_DATA ( data );
+    uint32_t address_index     = message->ifa_index;
+    if ( address_index == 0 ) {
+        return 1;
+    }
+    address_index --;
+
+    bt_address * address = parse_address ( addresses, message, IFLA_PAYLOAD ( data ) );
+    if ( address == NULL ) {
+        return 2;
+    }
+    if ( strcmp ( address->label, "lo" ) == 0 ) {
+        talloc_free ( address );
+        return 0;
+    }
+    if ( add ) {
+        ;
+    } else {
+        ;
+    }
+
+    return 0;
 }
 
 static inline
@@ -169,33 +219,25 @@ uint8_t process ( bt_addresses * addresses )
     uint8_t * buf          = talloc_buffer_get ( buffer );
     size_t length          = talloc_buffer_get_length ( buffer );
     size_t current_length  = length;
-
-    struct nlmsghdr * message;
-    uint16_t message_type;
-    in_addr_t address;
-    struct in_addr inaddr;
+    struct nlmsghdr * data;
 
     bool process_failed  = false;
-    for ( message = ( struct nlmsghdr * ) buf; NLMSG_OK ( message, current_length ); message = NLMSG_NEXT ( message, current_length ) ) {
-        message_type = message->nlmsg_type;
-        switch ( message_type ) {
+    for ( data = ( struct nlmsghdr * ) buf; NLMSG_OK ( data, current_length ); data = NLMSG_NEXT ( data, current_length ) ) {
+        switch ( data->nlmsg_type ) {
         case RTM_NEWADDR:
-            if ( parse_address ( message, &address ) != 0 ) {
+            if ( process_data ( addresses, data, true ) != 0 ) {
                 process_failed = true;
-                break;
             }
-            inaddr.s_addr = address;
-            printf ( "add %s\n", inet_ntoa ( inaddr ) );
             break;
         case RTM_DELADDR:
-            if ( parse_address ( message, &address ) != 0 ) {
+            if ( process_data ( addresses, data, false ) != 0 ) {
                 process_failed = true;
-                break;
             }
-            inaddr.s_addr = address;
-            printf ( "del %s\n", inet_ntoa ( inaddr ) );
             break;
         case NLMSG_DONE:
+            if ( talloc_buffer_trim ( buffer ) != 0 ) {
+                process_failed = true;
+            }
             break;
         }
     }

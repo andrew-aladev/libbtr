@@ -8,18 +8,25 @@
 
 #include "epoll.h"
 
-#include <talloc2/utils/list.h>
+#include "netinet/in.h"
+
+#include <talloc2/utils/dynarr.h>
 #include <talloc2/utils/buffer.h>
 
 typedef struct bt_addresses_t {
     bt_epoll_event_type type;
-    talloc_list *       addrs;
+    talloc_dynarr *     arr;
     talloc_buffer *     buffer;
     int *               netlink_socket_fd;
 } bt_addresses;
 
+typedef struct bt_address_t {
+    in_addr_t addr;
+    char *    label;
+} bt_address;
+
 bt_addresses * bt_addresses_new          ( void * ctx );
-uint8_t        bt_addresses_init_list    ( bt_addresses * addresses );
+uint8_t        bt_addresses_init         ( bt_addresses * addresses );
 uint8_t        bt_addresses_add_to_epoll ( bt_addresses * addresses, int epoll_fd );
 uint8_t        bt_addresses_read         ( bt_addresses * addresses );
 
