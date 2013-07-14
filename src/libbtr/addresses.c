@@ -199,14 +199,25 @@ uint8_t process_data ( bt_addresses * addresses, struct nlmsghdr * data, bool ad
     if ( address == NULL ) {
         return 2;
     }
-    if ( strcmp ( address->label, "lo" ) == 0 ) {
-        talloc_free ( address );
-        return 0;
-    }
+
+    talloc_dynarr * arr = addresses->arr;
+    size_t length       = talloc_dynarr_get_length ( arr );
     if ( add ) {
-        ;
+        // TODO address_index when aliases is active https://lkml.org/lkml/2013/7/14/19
+        if ( talloc_dynarr_get ( arr, address_index ) != NULL ) {
+            talloc_free ( address );
+            return 3;
+        }
+
+        if ( talloc_dynarr_grow_and_set ( arr, address_index, address ) != 0 ) {
+            talloc_free ( address );
+            return 4;
+        }
     } else {
-        ;
+        if ( talloc_dynarr_delete ( arr, address_index ) != 0 ) {
+            talloc_free ( address );
+            return 5;
+        }
     }
 
     return 0;

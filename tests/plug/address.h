@@ -46,7 +46,7 @@ bool test_address ( void * ctx )
             talloc_free ( addresses );
             return false;
         }
-        
+
         // test only initial interfaces list
         break;
     }
