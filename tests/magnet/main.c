@@ -9,7 +9,7 @@
 #include <string.h>
 
 #include <talloc2/tree.h>
-#include <libbtr/magnet.h>
+#include <libbtr/magnet/core.h>
 
 bool test_null ( void * ctx )
 {

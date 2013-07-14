@@ -5,10 +5,9 @@
 
 #include <string.h>
 
-#include "magnet.h"
-#include "btih.h"
-#include "magnet/keylist.h"
-#include "utils/url.h"
+#include "core.h"
+#include "keylist.h"
+#include "../utils/url.h"
 
 #include <talloc2/helpers.h>
 

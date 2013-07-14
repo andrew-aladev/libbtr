@@ -6,7 +6,7 @@
 #ifndef LIBBTR_ADDRESSES_H
 #define LIBBTR_ADDRESSES_H
 
-#include "epoll.h"
+#include "../epoll.h"
 
 #include "netinet/in.h"
 

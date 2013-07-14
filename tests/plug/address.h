@@ -7,7 +7,7 @@
 
 #include <sys/epoll.h>
 
-#include <libbtr/addresses.h>
+#include <libbtr/plug/addresses.h>
 
 bool test_address ( void * ctx )
 {

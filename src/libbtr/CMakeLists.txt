@@ -1,8 +1,9 @@
-set (INCLUDES magnet.h btih.h addresses.h epoll.h)
-set (SOURCES  magnet.c btih.c addresses.c)
+set (INCLUDES btih.h epoll.h)
+set (SOURCES  btih.c)
 
-add_subdirectory (utils)
 add_subdirectory (magnet)
+add_subdirectory (plug)
+add_subdirectory (utils)
 
 if (LIBBTR_SHARED MATCHES true)
     add_library (${LIBBTR_TARGET} SHARED ${SOURCES})

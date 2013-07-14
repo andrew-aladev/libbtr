@@ -9,7 +9,7 @@
 #include <stdint.h>
 #include <talloc2/utils/list.h>
 
-#include "btih.h"
+#include "../btih.h"
 
 // See specification http://www.bittorrent.org/beps/bep_0009.html
 //   additions https://trac.transmissionbt.com/ticket/5134
