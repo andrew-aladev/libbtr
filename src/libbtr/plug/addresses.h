@@ -10,14 +10,15 @@
 
 #include "netinet/in.h"
 
+#include <linux/radix-tree.h>
 #include <talloc2/utils/dynarr.h>
 #include <talloc2/utils/buffer.h>
 
 typedef struct bt_addresses_t {
-    bt_epoll_event_type type;
-    talloc_dynarr *     arr;
-    talloc_buffer *     buffer;
-    int *               netlink_socket_fd;
+    bt_epoll_event_type      type;
+//     struct radix_tree_root * tree;
+    talloc_buffer *          buffer;
+    int *                    netlink_socket_fd;
 } bt_addresses;
 
 typedef struct bt_address_t {
