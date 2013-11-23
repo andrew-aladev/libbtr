@@ -10,7 +10,6 @@
 
 #include "netinet/in.h"
 
-#include <linux/radix-tree.h>
 #include <talloc2/utils/dynarr.h>
 #include <talloc2/utils/buffer.h>
 

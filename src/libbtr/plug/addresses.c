@@ -17,7 +17,7 @@
 #include <linux/netlink.h>
 #include <linux/rtnetlink.h>
 
-#include <talloc2/ext/destructor.h>
+#include <talloc2/destructor.h>
 
 static inline
 uint8_t netlink_socket_close ( void * child_data, void * user_data )
